@@ -67,19 +67,19 @@ class _UserHomeState extends State<UserHome> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        fixedColor: Constants.kPrimaryColor,
-        unselectedItemColor: Constants.kPrimaryColor,
+        fixedColor: kPrimaryColor,
+        unselectedItemColor: kPrimaryColor,
         items: [
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
               'assets/home_icon.svg',
-              color: Constants.kPrimaryColor,
+              color: kPrimaryColor,
             ),
             label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset('assets/icon_profil_.svg',
-                color: Constants.kPrimaryColor),
+                color: kPrimaryColor),
             label: 'Profil',
           ),
         ],

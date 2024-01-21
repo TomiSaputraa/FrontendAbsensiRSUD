@@ -20,13 +20,13 @@ Widget absensiButton({String? assetPath, String? label}) {
       children: [
         SvgPicture.asset(
           '$assetPath',
-          color: Constants.kPrimaryColor,
+          color: kPrimaryColor,
         ),
         Text(
           '$label',
           style: const TextStyle(
             fontSize: 16,
-            color: Constants.kPrimaryColor,
+            color: kPrimaryColor,
           ),
         )
       ],

@@ -23,7 +23,7 @@ class _AbsensiPageState extends State<AbsensiPage> {
               'Pilih absensi yang kamu inginkan',
               style: TextStyle(
                 fontSize: 16,
-                color: Constants.kPrimaryColor,
+                color: kPrimaryColor,
               ),
             ),
             const SizedBox(height: 20),

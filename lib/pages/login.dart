@@ -1,6 +1,10 @@
 import 'dart:math';
 
+import 'package:absensi_mattaher/constans.dart';
+import 'package:absensi_mattaher/repositories/login_api.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -10,6 +14,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final storage = new FlutterSecureStorage();
+
+  final UserAPI userAPI = UserAPI();
+
   final _formKey = GlobalKey<FormState>();
   final idUserController = TextEditingController();
   final passwordController = TextEditingController();
@@ -33,7 +41,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   fSize: 16,
                   fWeight: FontWeight.w500,
                 ),
+                const SizedBox(height: 20),
                 _loginForm(),
+                const SizedBox(height: 50),
                 _loginButton(),
               ],
             ),
@@ -84,12 +94,8 @@ class _LoginScreenState extends State<LoginScreen> {
               keyboardType: TextInputType.name,
               decoration: const InputDecoration(hintText: 'Id User'),
               controller: idUserController,
-              validator: (value) {
-                print(value);
-              },
             ),
             TextFormField(
-              // obscureText: true,
               decoration: const InputDecoration(hintText: 'Password'),
               controller: passwordController,
             ),
@@ -103,10 +109,40 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _loginButton() {
     return ElevatedButton(
       onPressed: () async {
-        Navigator.pushReplacementNamed(context, '/user/home');
+        if (idUserController.text.isEmpty) {
+          print('Id user kosong');
+        } else if (passwordController.text.isEmpty) {
+          print('Password tidak boleh kosong');
+        } else {
+          try {
+            var response = await UserAPI().login(
+              idUserController.text,
+              passwordController.text,
+            );
+            await storage.write(key: 'token', value: response!['accessToken']);
+            await storage.write(key: 'id_user', value: response!['id_user']);
+
+            if (mounted) {
+              Navigator.pushReplacementNamed(context, '/user/home');
+            }
+
+            // print(response);
+            // fungsi pengecekan apakah token sudah disimpan
+            // String? value = await storage.read(key: 'id_user');
+            // print('key dari secure : $value');
+          } catch (e) {
+            if (e is DioException) {
+              if (e.response != null) {
+                print('DioError response: ${e.response!.data}');
+              } else {
+                print('DioError request: ${e.requestOptions}');
+              }
+            }
+          }
+        }
       },
       style: const ButtonStyle(
-        backgroundColor: MaterialStatePropertyAll(Colors.white),
+        backgroundColor: MaterialStatePropertyAll(kPrimaryColor),
         padding: MaterialStatePropertyAll(
           EdgeInsets.symmetric(horizontal: 60, vertical: 14),
         ),
@@ -114,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: const Text(
         'Login',
         style: TextStyle(
-          color: Colors.black,
+          color: Colors.white,
         ),
       ),
     );

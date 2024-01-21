@@ -41,7 +41,7 @@ class _AbsenPageState extends State<AbsenPage> {
               'Lengkapi semua intruksi yang di berikan',
               style: TextStyle(
                 fontSize: 16,
-                color: Constants.kPrimaryColor,
+                color: kPrimaryColor,
               ),
             ),
             const SizedBox(height: 20),
@@ -79,8 +79,7 @@ class _AbsenPageState extends State<AbsenPage> {
                 print('Konfirmasi');
               },
               style: const ButtonStyle(
-                backgroundColor:
-                    MaterialStatePropertyAll(Constants.kPrimaryColor),
+                backgroundColor: MaterialStatePropertyAll(kPrimaryColor),
               ),
               child: const Text('Konfirmasi'),
             )

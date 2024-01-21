@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 AppBar wAppBar(BuildContext context, {String? text}) {
   return AppBar(
-    backgroundColor: Constants.kSecondaryColor,
+    backgroundColor: kSecondaryColor,
     leading: BackButton(color: Theme.of(context).primaryColor),
     title: Text(
       '$text',
