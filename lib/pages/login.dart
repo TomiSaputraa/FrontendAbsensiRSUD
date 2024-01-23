@@ -1,11 +1,12 @@
-import 'dart:math';
-
 import 'package:absensi_mattaher/constans.dart';
+import 'package:absensi_mattaher/pages/user/home.dart';
+import 'package:absensi_mattaher/provider/database_provider.dart';
 import 'package:absensi_mattaher/repositories/login_api.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,7 +15,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final storage = new FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
 
   final UserAPI userAPI = UserAPI();
 
@@ -109,6 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _loginButton() {
     return ElevatedButton(
       onPressed: () async {
+        print('object');
         if (idUserController.text.isEmpty) {
           print('Id user kosong');
         } else if (passwordController.text.isEmpty) {
@@ -119,17 +121,39 @@ class _LoginScreenState extends State<LoginScreen> {
               idUserController.text,
               passwordController.text,
             );
-            await storage.write(key: 'token', value: response!['accessToken']);
-            await storage.write(key: 'id_user', value: response!['id_user']);
 
-            if (mounted) {
-              Navigator.pushReplacementNamed(context, '/user/home');
+            await DataBase().saveString('token', response!['accessToken']);
+            await DataBase().saveString('id_user', response!['id_user']);
+
+            try {
+              String? idUser = await DataBase().getString('id_user');
+              var responseProfile = await UserAPI().userProfileInfo(idUser!);
+              if (mounted) {
+                UserHome(
+                  response: responseProfile,
+                ).launch(context);
+              }
+            } catch (e) {
+              if (e is DioException) {
+                if (e.response != null) {
+                  print('DioError response: ${e.response!.data['title']}');
+                  print('DioError response: ${e.response!.data['message']}');
+                } else {
+                  print('DioError request: ${e.requestOptions}');
+                }
+              }
             }
 
             // print(response);
             // fungsi pengecekan apakah token sudah disimpan
+            Map<String, String> allValues = await storage.readAll();
+            print('all value : $allValues');
+
             // String? value = await storage.read(key: 'id_user');
             // print('key dari secure : $value');
+
+            // String? value = await DataBase().getString('token');
+            // print(value);
           } catch (e) {
             if (e is DioException) {
               if (e.response != null) {

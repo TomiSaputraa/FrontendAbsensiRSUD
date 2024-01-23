@@ -1,8 +1,9 @@
 import 'package:absensi_mattaher/constans.dart';
+import 'package:absensi_mattaher/pages/user/absen.dart';
 import 'package:absensi_mattaher/pages/user/widget/absensiButton.dart';
 import 'package:absensi_mattaher/pages/user/widget/appbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 class AbsensiPage extends StatefulWidget {
   const AbsensiPage({super.key});
@@ -29,7 +30,7 @@ class _AbsensiPageState extends State<AbsensiPage> {
             const SizedBox(height: 20),
             GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, '/user/absen');
+                const AbsenPage().launch(context);
               },
               child: absensiButton(
                 assetPath: 'assets/icon _fingerprint.svg',

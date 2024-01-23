@@ -1,11 +1,15 @@
 import 'dart:io';
 
 import 'package:absensi_mattaher/constans.dart';
+import 'package:absensi_mattaher/pages/user/lokasi.dart';
 import 'package:absensi_mattaher/pages/user/widget/absensiButton.dart';
 import 'package:absensi_mattaher/pages/user/widget/appbar.dart';
+import 'package:absensi_mattaher/provider/database_provider.dart';
+import 'package:absensi_mattaher/repositories/absensi_api.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart' as path;
+import 'package:nb_utils/nb_utils.dart';
 
 class AbsenPage extends StatefulWidget {
   const AbsenPage({super.key});
@@ -14,20 +18,12 @@ class AbsenPage extends StatefulWidget {
 }
 
 class _AbsenPageState extends State<AbsenPage> {
-  File? imageFile;
+  bool isFotoDone = false;
 
-  void getImage() async {
-    final ImagePicker imagePicker = ImagePicker();
-    final XFile? imagePicked = await imagePicker.pickImage(
-      source: ImageSource.camera,
-    );
-    imageFile = File(imagePicked!.path);
-
-    // Dapatkan hanya nama file dari path
-    String fileName = path.basename(imageFile!.path);
-    setState(() {});
-    print(fileName);
-  }
+  final ImagePicker _imagePicker = ImagePicker();
+  File imageFile = File('No data');
+  String imagePath = 'No image path';
+  XFile? pickedImage;
 
   @override
   Widget build(BuildContext context) {
@@ -49,37 +45,84 @@ class _AbsenPageState extends State<AbsenPage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 GestureDetector(
-                  onTap: () {
-                    getImage();
+                  onTap: () async {
+                    pickedImage = await _imagePicker.pickImage(
+                        source: ImageSource.camera);
+                    setState(() {
+                      imageFile = File(pickedImage!.path);
+                      imagePath = pickedImage!.path;
+                      // DataBaseSharedPref().saveString(imagePath, 'image_path');
+                      isFotoDone = !isFotoDone;
+                    });
+                    print('Image file : ${imageFile.toString()}');
+                    print('Image path : ${imagePath.toString()}');
                   },
                   child: absensiButton(
                       assetPath: 'assets/kamera_icon.svg', label: 'Foto'),
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, '/user/absen/lokasi');
+                    const LokasiScreen().launch(context);
                   },
                   child: absensiButton(
                       assetPath: 'assets/lokasi_icon.svg', label: 'Lokasi'),
                 ),
               ],
             ),
-            imageFile != null
-                ? Container(
-                    height: 200,
-                    width: MediaQuery.of(context).size.width,
-                    child: Image.file(
-                      imageFile!,
-                      fit: BoxFit.cover,
-                    ),
-                  )
-                : Container(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Foto : ',
+                  style: kTextStyle,
+                ),
+                isFotoDone == true
+                    ? Text(
+                        'Berhasil',
+                        style: kTextStyle,
+                      )
+                    : Text(
+                        'Gagal',
+                        style: kTextStyle,
+                      ),
+              ],
+            ),
             ElevatedButton(
-              onPressed: () {
-                print('Konfirmasi');
+              onPressed: () async {
+                try {
+                  // print(imagePath);
+                  var idUser = await DataBase().getString('id_user');
+                  var lat =
+                      await DataBaseSharedPref().retrieveString('latitude');
+                  var long =
+                      await DataBaseSharedPref().retrieveString('longtitude');
+                  var token = await DataBase().getString('token');
+
+                  await Absensi().createAbsensi(
+                    idUser: idUser,
+                    latitudeMasuk: lat,
+                    longtitudeMasuk: long,
+                    fotoMasuk: imageFile,
+                    token: token,
+                  );
+
+                  if (mounted) {
+                    Navigator.pop(context);
+                  }
+                } catch (e) {
+                  if (e is DioException) {
+                    if (e.response != null) {
+                      print('DioError response: ${e.response}');
+                    } else {
+                      print('DioError request: ${e.requestOptions}');
+                    }
+                  }
+                }
               },
               style: const ButtonStyle(
-                backgroundColor: MaterialStatePropertyAll(kPrimaryColor),
+                backgroundColor: MaterialStatePropertyAll(
+                  kPrimaryColor,
+                ),
               ),
               child: const Text('Konfirmasi'),
             )

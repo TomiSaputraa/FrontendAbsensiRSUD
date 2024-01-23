@@ -18,8 +18,11 @@ dependencies:
   path: ^1.8.3
   flutter_secure_storage: ^9.0.0
   dio: ^5.4.0
-  http: ^1.1.0
   shared_preferences: ^2.2.2
+  google_fonts: ^6.1.0
+  nb_utils: ^6.1.0
+  geolocator: ^10.1.0
+  geocoding: ^2.1.1
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,10 @@
 import 'package:absensi_mattaher/constans.dart';
 import 'package:absensi_mattaher/pages/user/widget/appbar.dart';
+import 'package:absensi_mattaher/provider/database_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 class LokasiScreen extends StatefulWidget {
   const LokasiScreen({super.key});
@@ -9,6 +13,68 @@ class LokasiScreen extends StatefulWidget {
 }
 
 class _LokasiScreenState extends State<LokasiScreen> {
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  String? _currentAddress;
+  Position? _currentPosition;
+
+  // Handle permission
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location services are disabled. Please enable the services')));
+      return false;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Location permissions are denied')));
+        return false;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
+      return false;
+    }
+    return true;
+  }
+
+  Future<void> _getCurrentPosition() async {
+    final hasPermission = await _handleLocationPermission();
+
+    if (!hasPermission) return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
+      setState(() => _currentPosition = position);
+      _getAddressFromLatLng(_currentPosition!);
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+  Future<void> _getAddressFromLatLng(Position position) async {
+    await placemarkFromCoordinates(
+            _currentPosition!.latitude, _currentPosition!.longitude)
+        .then((List<Placemark> placemarks) {
+      Placemark place = placemarks[0];
+      setState(() {
+        _currentAddress =
+            '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+      });
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,23 +115,22 @@ class _LokasiScreenState extends State<LokasiScreen> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                const Text(
-                  'Lat : -838293892.0',
-                  style: TextStyle(
+                Text(
+                  'Lat : ${_currentPosition?.latitude.toString() ?? ''}',
+                  style: kTextStyle.copyWith(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                     height: 0,
                   ),
                 ),
-                const Text(
-                  'Lng : -83882389217.9',
-                  style: TextStyle(
+                Text(
+                  'Lng : ${_currentPosition?.longitude.toString() ?? ''}',
+                  style: kTextStyle.copyWith(
                     color: Colors.black,
                     fontSize: 16,
-                    fontFamily: 'Poppins',
                     fontWeight: FontWeight.w500,
                     height: 0,
                   ),
@@ -74,7 +139,17 @@ class _LokasiScreenState extends State<LokasiScreen> {
             ),
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () async {
+              await _getCurrentPosition();
+
+              String? lat = _currentPosition?.latitude.toString();
+              String? long = _currentPosition?.longitude.toString();
+              print('lat $lat');
+              print('long $long');
+
+              DataBaseSharedPref().saveString(lat!, 'latitude');
+              DataBaseSharedPref().saveString(long!, 'longtitude');
+            },
             style: ButtonStyle(
               backgroundColor: MaterialStatePropertyAll(
                 kPrimaryColor.withOpacity(0.5),
@@ -91,7 +166,17 @@ class _LokasiScreenState extends State<LokasiScreen> {
             ),
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () async {
+              var getDatabase =
+                  await DataBaseSharedPref().retrieveString('latitude');
+              var getDatabaselong =
+                  await DataBaseSharedPref().retrieveString('longtitude');
+
+              print('latitudeKey secure: $getDatabase');
+              print('longtitude secure: $getDatabaselong');
+              // ignore: use_build_context_synchronously
+              Navigator.pop(context);
+            },
             style: const ButtonStyle(
               backgroundColor: MaterialStatePropertyAll(kPrimaryColor),
             ),
