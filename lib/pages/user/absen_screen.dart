@@ -1,15 +1,17 @@
 import 'dart:io';
 
 import 'package:absensi_mattaher/constans.dart';
-import 'package:absensi_mattaher/pages/user/lokasi.dart';
+import 'package:absensi_mattaher/pages/user/lokasi_screen.dart';
 import 'package:absensi_mattaher/pages/user/widget/absensiButton.dart';
 import 'package:absensi_mattaher/pages/user/widget/appbar.dart';
-import 'package:absensi_mattaher/provider/database_provider.dart';
-import 'package:absensi_mattaher/repositories/absensi_api.dart';
+import 'package:absensi_mattaher/services/database_services.dart';
+import 'package:absensi_mattaher/repositories/absensi_repositories.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
+
+import '../../utils/constants/constants.dart';
 
 class AbsenPage extends StatefulWidget {
   const AbsenPage({super.key});
@@ -54,8 +56,8 @@ class _AbsenPageState extends State<AbsenPage> {
                       // DataBaseSharedPref().saveString(imagePath, 'image_path');
                       isFotoDone = !isFotoDone;
                     });
-                    print('Image file : ${imageFile.toString()}');
-                    print('Image path : ${imagePath.toString()}');
+                    debugPrint('Image file : ${imageFile.toString()}');
+                    debugPrint('Image path : ${imagePath.toString()}');
                   },
                   child: absensiButton(
                       assetPath: 'assets/kamera_icon.svg', label: 'Foto'),
@@ -91,17 +93,15 @@ class _AbsenPageState extends State<AbsenPage> {
               onPressed: () async {
                 try {
                   // print(imagePath);
-                  var idUser = await DataBase().getString('id_user');
-                  var lat =
-                      await DataBaseSharedPref().retrieveString('latitude');
-                  var long =
-                      await DataBaseSharedPref().retrieveString('longtitude');
-                  var token = await DataBase().getString('token');
+                  var idUser = await DataBase().storageGetString('id_user');
+                  var lat = await DataBase().prefGetString('latitude');
+                  var long = await DataBase().prefGetString('longtitude');
+                  var token = await DataBase().storageGetString('token');
 
                   await Absensi().createAbsensi(
-                    idUser: idUser,
-                    latitudeMasuk: lat,
-                    longtitudeMasuk: long,
+                    idUser: idUser!,
+                    latitudeMasuk: lat!,
+                    longtitudeMasuk: long!,
                     fotoMasuk: imageFile,
                     token: token,
                   );
@@ -112,9 +112,9 @@ class _AbsenPageState extends State<AbsenPage> {
                 } catch (e) {
                   if (e is DioException) {
                     if (e.response != null) {
-                      print('DioError response: ${e.response}');
+                      debugPrint('DioError response: ${e.response}');
                     } else {
-                      print('DioError request: ${e.requestOptions}');
+                      debugPrint('DioError request: ${e.requestOptions}');
                     }
                   }
                 }

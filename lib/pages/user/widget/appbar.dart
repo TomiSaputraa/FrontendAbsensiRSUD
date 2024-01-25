@@ -1,6 +1,8 @@
 import 'package:absensi_mattaher/constans.dart';
 import 'package:flutter/material.dart';
 
+import '../../../utils/constants/constants.dart';
+
 AppBar wAppBar(BuildContext context, {String? text}) {
   return AppBar(
     backgroundColor: kSecondaryColor,

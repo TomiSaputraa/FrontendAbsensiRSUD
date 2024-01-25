@@ -1,22 +1,21 @@
 import 'dart:io';
 
-import 'package:absensi_mattaher/config_users.dart';
+import 'package:absensi_mattaher/utils/constants/constants.dart';
 import 'package:dio/dio.dart';
 
 class Absensi {
   final Dio dio = Dio();
 
   Future createAbsensi({
-    String? idUser,
+    required String idUser,
     String? jamMasuk,
     String? tanggalAbsensi,
-    String? latitudeMasuk,
-    String? longtitudeMasuk,
-    File? fotoMasuk,
+    required String latitudeMasuk,
+    required String longtitudeMasuk,
+    required File fotoMasuk,
     String? token,
   }) async {
-    Uri url = Uri.parse(ConfigUser.absensiUrl + ConfigUser.createAbsensiPath);
-    print('url $url');
+    Uri url = Uri.parse(createAbsensiUrl);
 
     try {
       // cek ambil foto dari mana
@@ -27,7 +26,7 @@ class Absensi {
           "latitude_masuk": latitudeMasuk,
           "longtitude_masuk": longtitudeMasuk,
           'file': await MultipartFile.fromFile(
-            fotoMasuk!.path, // Ambil file foto dari mana
+            fotoMasuk.path, // Ambil file foto dari mana
             filename: fotoMasuk.path
                 .split('/')
                 .last, // setelah di ambil jika di upload ingin nama file nya jadi apa

@@ -1,10 +1,11 @@
 import 'package:absensi_mattaher/constans.dart';
 import 'package:absensi_mattaher/pages/user/widget/appbar.dart';
-import 'package:absensi_mattaher/provider/database_provider.dart';
+import 'package:absensi_mattaher/services/database_services.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:nb_utils/nb_utils.dart';
+
+import '../../utils/constants/constants.dart';
 
 class LokasiScreen extends StatefulWidget {
   const LokasiScreen({super.key});
@@ -13,9 +14,7 @@ class LokasiScreen extends StatefulWidget {
 }
 
 class _LokasiScreenState extends State<LokasiScreen> {
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
-  String? _currentAddress;
+  // String? _currentAddress;
   Position? _currentPosition;
 
   // Handle permission
@@ -55,25 +54,25 @@ class _LokasiScreenState extends State<LokasiScreen> {
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) {
       setState(() => _currentPosition = position);
-      _getAddressFromLatLng(_currentPosition!);
+      // _getAddressFromLatLng(_currentPosition!);
     }).catchError((e) {
       debugPrint(e);
     });
   }
 
-  Future<void> _getAddressFromLatLng(Position position) async {
-    await placemarkFromCoordinates(
-            _currentPosition!.latitude, _currentPosition!.longitude)
-        .then((List<Placemark> placemarks) {
-      Placemark place = placemarks[0];
-      setState(() {
-        _currentAddress =
-            '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
-      });
-    }).catchError((e) {
-      debugPrint(e);
-    });
-  }
+  // Future<void> _getAddressFromLatLng(Position position) async {
+  //   await placemarkFromCoordinates(
+  //           _currentPosition!.latitude, _currentPosition!.longitude)
+  //       .then((List<Placemark> placemarks) {
+  //     Placemark place = placemarks[0];
+  //     setState(() {
+  //       // _currentAddress =
+  //       //     '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+  //     });
+  //   }).catchError((e) {
+  //     debugPrint(e);
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -147,8 +146,8 @@ class _LokasiScreenState extends State<LokasiScreen> {
               print('lat $lat');
               print('long $long');
 
-              DataBaseSharedPref().saveString(lat!, 'latitude');
-              DataBaseSharedPref().saveString(long!, 'longtitude');
+              DataBase().prefSetString(lat!, 'latitude');
+              DataBase().prefSetString(long!, 'longtitude');
             },
             style: ButtonStyle(
               backgroundColor: MaterialStatePropertyAll(
@@ -167,10 +166,9 @@ class _LokasiScreenState extends State<LokasiScreen> {
           ),
           ElevatedButton(
             onPressed: () async {
-              var getDatabase =
-                  await DataBaseSharedPref().retrieveString('latitude');
+              var getDatabase = await DataBase().prefGetString('latitude');
               var getDatabaselong =
-                  await DataBaseSharedPref().retrieveString('longtitude');
+                  await DataBase().prefGetString('longtitude');
 
               print('latitudeKey secure: $getDatabase');
               print('longtitude secure: $getDatabaselong');

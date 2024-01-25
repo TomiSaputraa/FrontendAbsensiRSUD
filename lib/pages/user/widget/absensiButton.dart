@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-import '../../../constans.dart';
+import '../../../utils/constants/constants.dart';
 
 Widget absensiButton({String? assetPath, String? label}) {
   return Container(

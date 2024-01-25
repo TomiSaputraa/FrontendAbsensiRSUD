@@ -1,12 +1,16 @@
 import 'package:absensi_mattaher/constans.dart';
+import 'package:absensi_mattaher/model/user_profile.dart';
 import 'package:absensi_mattaher/pages/user/home.dart';
-import 'package:absensi_mattaher/provider/database_provider.dart';
-import 'package:absensi_mattaher/repositories/login_api.dart';
+import 'package:absensi_mattaher/services/database_services.dart';
+import 'package:absensi_mattaher/repositories/user_repositories.dart';
+import 'package:absensi_mattaher/utils/logging_util.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nb_utils/nb_utils.dart';
+
+import '../utils/constants/constants.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -17,7 +21,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final storage = const FlutterSecureStorage();
 
-  final UserAPI userAPI = UserAPI();
+  final UserRepositories userAPI = UserRepositories();
 
   final _formKey = GlobalKey<FormState>();
   final idUserController = TextEditingController();
@@ -110,56 +114,55 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _loginButton() {
     return ElevatedButton(
       onPressed: () async {
-        print('object');
         if (idUserController.text.isEmpty) {
-          print('Id user kosong');
+          printWarning('id user kosong');
         } else if (passwordController.text.isEmpty) {
-          print('Password tidak boleh kosong');
+          printWarning('Password tidak boleh kosong');
         } else {
           try {
-            var response = await UserAPI().login(
+            var response = await UserRepositories().login(
               idUserController.text,
               passwordController.text,
             );
 
-            await DataBase().saveString('token', response!['accessToken']);
-            await DataBase().saveString('id_user', response!['id_user']);
+            await DataBase()
+                .storageSaveString('token', response!['accessToken']);
+            await DataBase().storageSaveString('id_user', response!['id_user']);
 
             try {
-              String? idUser = await DataBase().getString('id_user');
-              var responseProfile = await UserAPI().userProfileInfo(idUser!);
+              UserProfile userProfile =
+                  await UserRepositories().userProfileInfo();
+              // print('model : ${userProfile.namaLengkap}');
               if (mounted) {
-                UserHome(
-                  response: responseProfile,
-                ).launch(context);
+                // UserHome(
+                //   response: responseProfile,
+                // ).launch(context);
+                const Home().launch(context);
               }
             } catch (e) {
               if (e is DioException) {
                 if (e.response != null) {
-                  print('DioError response: ${e.response!.data['title']}');
-                  print('DioError response: ${e.response!.data['message']}');
+                  printError('DioError response: ${e.response!.data['title']}');
+                  printError(
+                      'DioError response: ${e.response!.data['message']}');
                 } else {
-                  print('DioError request: ${e.requestOptions}');
+                  printError('DioError request: ${e.requestOptions}');
                 }
               }
             }
 
-            // print(response);
             // fungsi pengecekan apakah token sudah disimpan
             Map<String, String> allValues = await storage.readAll();
-            print('all value : $allValues');
-
-            // String? value = await storage.read(key: 'id_user');
-            // print('key dari secure : $value');
+            log('all storage : $allValues');
 
             // String? value = await DataBase().getString('token');
-            // print(value);
+            // log(value);
           } catch (e) {
             if (e is DioException) {
               if (e.response != null) {
-                print('DioError response: ${e.response!.data}');
+                log('DioError response: ${e.response!.data}');
               } else {
-                print('DioError request: ${e.requestOptions}');
+                log('DioError request: ${e.requestOptions}');
               }
             }
           }
