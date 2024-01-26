@@ -1,14 +1,26 @@
-import 'package:absensi_mattaher/constans.dart';
 import 'package:absensi_mattaher/pages/user/absensi_screen.dart';
+import 'package:absensi_mattaher/pages/user/cubits/user_details_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../utils/constants/constants.dart';
 
-class UserHome extends StatelessWidget {
-  const UserHome({super.key, this.response});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key, this.response});
   final Map? response;
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    context.read<UserDetailsCubit>().fetchUserDetails();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,24 +75,6 @@ class UserHome extends StatelessWidget {
           ),
         ],
       ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   fixedColor: kPrimaryColor,
-      //   unselectedItemColor: kPrimaryColor,
-      //   items: [
-      //     BottomNavigationBarItem(
-      //       icon: SvgPicture.asset(
-      //         'assets/home_icon.svg',
-      //         color: kPrimaryColor,
-      //       ),
-      //       label: 'Home',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: SvgPicture.asset('assets/icon_profil_.svg',
-      //           color: kPrimaryColor),
-      //       label: 'Profil',
-      //     ),
-      //   ],
-      // ),
     );
   }
 
@@ -107,20 +101,23 @@ class UserHome extends StatelessWidget {
                 const CircleAvatar(
                   radius: 25,
                   backgroundImage: AssetImage('assets/foto.png'),
-                  // backgroundImage: NetworkImage(
-                  //   ConfigUser.mainUrl + response['absensi'],
-                  // ),
                 ),
                 const SizedBox(width: 12),
-                Text(
-                  // response!['nama_lengkap'] ?? '',
-                  "ss",
-                  maxLines: 1,
-                  style: kTextStyle.copyWith(
-                    fontSize: 23,
-                    fontWeight: FontWeight.bold,
-                    color: const Color(0xFF083B7F),
-                  ),
+                BlocBuilder<UserDetailsCubit, UserDetailsState>(
+                  builder: (context, state) {
+                    if (state is UserDetailsFetchInSucces) {
+                      return Text(
+                        state.userProfile.namaLengkap.toString(),
+                        maxLines: 1,
+                        style: kTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFF083B7F),
+                        ),
+                      );
+                    }
+                    return Container();
+                  },
                 )
               ],
             ),

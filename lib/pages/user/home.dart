@@ -1,6 +1,5 @@
-import 'package:absensi_mattaher/constans.dart';
 import 'package:absensi_mattaher/pages/user/home_screen.dart';
-import 'package:absensi_mattaher/pages/user/profil_screen.dart';
+import 'package:absensi_mattaher/pages/user/profile_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/constants/constants.dart';
@@ -15,7 +14,7 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
-    UserHome(),
+    HomeScreen(),
     ProfileScreen(),
   ];
 

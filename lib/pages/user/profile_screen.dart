@@ -36,7 +36,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Text('berhasil ${state.userProfile.namaLengkap}'),
               );
             } else if (state is UserDetailsFetchInFailure) {
-              return Text('data failed');
+              return Center(
+                  child: Column(
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        context.read<UserDetailsCubit>().fetchUserDetails();
+                      },
+                      child: Text('refresh')),
+                  Text('data failed'),
+                ],
+              ));
             }
             return Container(
               child: Text('data'),

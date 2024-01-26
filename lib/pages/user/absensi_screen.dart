@@ -1,4 +1,3 @@
-import 'package:absensi_mattaher/constans.dart';
 import 'package:absensi_mattaher/pages/user/absen_screen.dart';
 import 'package:absensi_mattaher/pages/user/widget/absensiButton.dart';
 import 'package:absensi_mattaher/pages/user/widget/appbar.dart';

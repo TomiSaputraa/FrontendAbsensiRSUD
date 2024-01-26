@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:absensi_mattaher/constans.dart';
 import 'package:absensi_mattaher/pages/user/lokasi_screen.dart';
 import 'package:absensi_mattaher/pages/user/widget/absensiButton.dart';
 import 'package:absensi_mattaher/pages/user/widget/appbar.dart';
