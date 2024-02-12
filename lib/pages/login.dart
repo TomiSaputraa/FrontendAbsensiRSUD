@@ -1,4 +1,3 @@
-import 'package:absensi_mattaher/model/user_profile.dart';
 import 'package:absensi_mattaher/pages/user/home.dart';
 import 'package:absensi_mattaher/services/database_services.dart';
 import 'package:absensi_mattaher/repositories/user_repositories.dart';
@@ -119,43 +118,26 @@ class _LoginScreenState extends State<LoginScreen> {
           printWarning('Password tidak boleh kosong');
         } else {
           try {
+            print(idUserController.text);
+            print(passwordController.text);
             var response = await UserRepositories().login(
-              idUserController.text,
-              passwordController.text,
+              idUser: idUserController.text,
+              password: passwordController.text,
             );
 
+            print("response : $response");
             await DataBase()
                 .storageSaveString('token', response!['accessToken']);
             await DataBase().storageSaveString('id_user', response!['id_user']);
 
-            try {
-              UserProfile userProfile =
-                  await UserRepositories().userProfileInfo();
-              // print('model : ${userProfile.namaLengkap}');
-              if (mounted) {
-                // UserHome(
-                //   response: responseProfile,
-                // ).launch(context);
-                const Home().launch(context);
-              }
-            } catch (e) {
-              if (e is DioException) {
-                if (e.response != null) {
-                  printError('DioError response: ${e.response!.data['title']}');
-                  printError(
-                      'DioError response: ${e.response!.data['message']}');
-                } else {
-                  printError('DioError request: ${e.requestOptions}');
-                }
-              }
+            // print('model : ${userProfile.namaLengkap}');
+            if (mounted) {
+              const Home().launch(context);
             }
 
             // fungsi pengecekan apakah token sudah disimpan
             Map<String, String> allValues = await storage.readAll();
-            log('all storage : $allValues');
-
-            // String? value = await DataBase().getString('token');
-            // log(value);
+            log('all data : $allValues');
           } catch (e) {
             if (e is DioException) {
               if (e.response != null) {

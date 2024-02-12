@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
-import '../../utils/constants/constants.dart';
+import '../../../utils/constants/constants.dart';
 
 class LokasiScreen extends StatefulWidget {
   const LokasiScreen({super.key});

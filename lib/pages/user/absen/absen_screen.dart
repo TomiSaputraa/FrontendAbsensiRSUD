@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:absensi_mattaher/pages/user/lokasi_screen.dart';
+import 'package:absensi_mattaher/pages/user/absen/lokasi_screen.dart';
 import 'package:absensi_mattaher/pages/user/widget/absensiButton.dart';
 import 'package:absensi_mattaher/pages/user/widget/appbar.dart';
 import 'package:absensi_mattaher/services/database_services.dart';
@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-import '../../utils/constants/constants.dart';
+import '../../../utils/constants/constants.dart';
 
 class AbsenPage extends StatefulWidget {
   const AbsenPage({super.key});
@@ -35,13 +35,12 @@ class _AbsenPageState extends State<AbsenPage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             const Text(
-              'Lengkapi semua intruksi yang di berikan',
+              'Lengkapi semua intruksi yang di berikan!',
               style: TextStyle(
                 fontSize: 16,
                 color: kPrimaryColor,
               ),
             ),
-            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -124,7 +123,7 @@ class _AbsenPageState extends State<AbsenPage> {
                 ),
               ),
               child: const Text('Konfirmasi'),
-            )
+            ),
           ],
         ),
       ),

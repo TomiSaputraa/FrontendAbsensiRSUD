@@ -1,5 +1,5 @@
-import 'package:absensi_mattaher/pages/user/home_screen.dart';
-import 'package:absensi_mattaher/pages/user/profile_screen.dart';
+import 'package:absensi_mattaher/pages/user/home/home_screen.dart';
+import 'package:absensi_mattaher/pages/user/home/profile_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/constants/constants.dart';

@@ -8,12 +8,12 @@ class UserRepositories {
   final secureStorage = const FlutterSecureStorage();
   final Dio dio = Dio();
 
-  Future login(String idUser, String password) async {
+  Future login({required String idUser, required String password}) async {
     final response = await dio.post(
       loginUrl,
       data: <String, dynamic>{
         'id_user': idUser,
-        'password': password,
+        'password_hash': password,
       },
     );
 

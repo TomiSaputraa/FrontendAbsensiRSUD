@@ -19,7 +19,7 @@ Widget absensiButton({String? assetPath, String? label}) {
       children: [
         SvgPicture.asset(
           '$assetPath',
-          color: kPrimaryColor,
+          colorFilter: const ColorFilter.mode(kPrimaryColor, BlendMode.srcIn),
         ),
         Text(
           '$label',
