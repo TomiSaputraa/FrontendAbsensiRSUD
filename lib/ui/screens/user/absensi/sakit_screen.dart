@@ -7,7 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
-import '../../../widgets/konfirmasiButton.dart';
+import '../../../widgets/konfirmasi_button.dart';
 
 class SakitScreen extends StatefulWidget {
   const SakitScreen({super.key});

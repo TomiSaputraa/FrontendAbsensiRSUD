@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:absensi_mattaher/ui/widgets/appbar.dart';
 import 'package:absensi_mattaher/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +26,7 @@ class _JadwalScreenState extends State<JadwalScreen> {
                 fontSize: 16,
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Container(
               width: MediaQuery.of(context).size.width * 0.85,
               decoration: BoxDecoration(
@@ -58,7 +56,7 @@ class _JadwalScreenState extends State<JadwalScreen> {
                           style: kTextStyle.copyWith(fontSize: 16)),
                     ),
                     Container(
-                      padding: EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(5),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

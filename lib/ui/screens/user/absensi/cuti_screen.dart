@@ -3,7 +3,7 @@ import 'package:absensi_mattaher/utils/ui_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../widgets/konfirmasiButton.dart';
+import '../../../widgets/konfirmasi_button.dart';
 
 class CutiScreen extends StatefulWidget {
   const CutiScreen({super.key});

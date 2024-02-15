@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:absensi_mattaher/ui/screens/user/absen/lokasi_screen.dart';
-import 'package:absensi_mattaher/ui/widgets/absensiButton.dart';
+import 'package:absensi_mattaher/ui/widgets/absensi_button.dart';
 import 'package:absensi_mattaher/ui/widgets/appbar.dart';
 import 'package:absensi_mattaher/services/database_services.dart';
 import 'package:absensi_mattaher/repositories/absensi_repositories.dart';
