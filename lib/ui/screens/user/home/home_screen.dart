@@ -1,11 +1,13 @@
-import 'package:absensi_mattaher/pages/user/absensi/absensi_screen.dart';
-import 'package:absensi_mattaher/pages/user/cubits/user_details_cubit.dart';
+import 'package:absensi_mattaher/ui/screens/user/absensi/absensi_screen.dart';
+import 'package:absensi_mattaher/ui/screens/user/jadwal/jadwal_screen.dart';
+import 'package:absensi_mattaher/utils/ui_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-import '../../../utils/constants/constants.dart';
+import '../../../../utils/constants/constants.dart';
+import '../../../styles/colors.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, this.response});
@@ -62,7 +64,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            SvgPicture.asset('assets/home/clock_icon.svg'),
+                            SvgPicture.asset(
+                                UiUtils.getImagesPath('home/clock_icon.svg')),
                             Container(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 20,
@@ -105,7 +108,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            SvgPicture.asset('assets/home/clock_icon.svg'),
+                            SvgPicture.asset(
+                                UiUtils.getImagesPath('home/clock_icon.svg')),
                             Container(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 20,
@@ -154,18 +158,20 @@ class _HomeScreenState extends State<HomeScreen> {
                         },
                         child: _button(
                             name: "Absensi",
-                            iconPath: "assets/home/icon_fingerprint.svg"),
+                            iconPath: UiUtils.getImagesPath(
+                                'home/icon_fingerprint.svg')),
                       ),
                     ),
                     SizedBox(
                       width: 57,
                       child: GestureDetector(
                         onTap: () {
-                          const AbsensiPage().launch(context);
+                          const JadwalScreen().launch(context);
                         },
                         child: _button(
                             name: "Jadwal",
-                            iconPath: "assets/home/jadwal_icon.svg"),
+                            iconPath:
+                                UiUtils.getImagesPath('home/jadwal_icon.svg')),
                       ),
                     ),
                     SizedBox(
@@ -175,8 +181,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           const AbsensiPage().launch(context);
                         },
                         child: _button(
-                            name: "Pulang",
-                            iconPath: "assets/home/pulang_icon.svg"),
+                          name: "Pulang",
+                          iconPath:
+                              UiUtils.getImagesPath("home/pulang_icon.svg"),
+                        ),
                       ),
                     ),
                   ],
@@ -211,7 +219,9 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 CircleAvatar(
                   radius: 25,
-                  backgroundImage: AssetImage('assets/foto.png'),
+                  backgroundImage: AssetImage(
+                    UiUtils.getImagesPath('foto.png'),
+                  ),
                 ),
                 const SizedBox(width: 12),
                 Column(
@@ -251,7 +261,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _button({required String name, required String iconPath}) {
     return Column(
       children: [
-        SvgPicture.asset(iconPath),
+        SvgPicture.asset(
+          iconPath,
+          width: 45,
+          height: 45,
+        ),
         Text(
           name,
           style: const TextStyle(

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../../utils/constants/constants.dart';
+import '../../utils/constants/constants.dart';
+import '../styles/colors.dart';
 
-ElevatedButton wKonfirmasiButton({required Function function}) {
+ElevatedButton wKonfirmasiButton({Function? function}) {
   return ElevatedButton(
-    onPressed: () {
-      function();
-    },
+    onPressed: function as void Function(),
     style: const ButtonStyle(
       backgroundColor: MaterialStatePropertyAll(
         kPrimaryColor,

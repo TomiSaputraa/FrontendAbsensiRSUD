@@ -1,16 +1,18 @@
 import 'dart:io';
 
-import 'package:absensi_mattaher/pages/user/absen/lokasi_screen.dart';
-import 'package:absensi_mattaher/pages/user/widget/absensiButton.dart';
-import 'package:absensi_mattaher/pages/user/widget/appbar.dart';
+import 'package:absensi_mattaher/ui/screens/user/absen/lokasi_screen.dart';
+import 'package:absensi_mattaher/ui/widgets/absensiButton.dart';
+import 'package:absensi_mattaher/ui/widgets/appbar.dart';
 import 'package:absensi_mattaher/services/database_services.dart';
 import 'package:absensi_mattaher/repositories/absensi_repositories.dart';
+import 'package:absensi_mattaher/utils/ui_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-import '../../../utils/constants/constants.dart';
+import '../../../../utils/constants/constants.dart';
+import '../../../styles/colors.dart';
 
 class AbsenPage extends StatefulWidget {
   const AbsenPage({super.key});
@@ -58,14 +60,16 @@ class _AbsenPageState extends State<AbsenPage> {
                     debugPrint('Image path : ${imagePath.toString()}');
                   },
                   child: absensiButton(
-                      assetPath: 'assets/kamera_icon.svg', label: 'Foto'),
+                      assetPath: UiUtils.getImagesPath('kamera_icon.svg'),
+                      label: 'Foto'),
                 ),
                 GestureDetector(
                   onTap: () {
                     const LokasiScreen().launch(context);
                   },
                   child: absensiButton(
-                      assetPath: 'assets/lokasi_icon.svg', label: 'Lokasi'),
+                      assetPath: UiUtils.getImagesPath('lokasi_icon.svg'),
+                      label: 'Lokasi'),
                 ),
               ],
             ),

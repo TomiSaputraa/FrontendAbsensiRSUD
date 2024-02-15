@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../../utils/constants/constants.dart';
+import '../styles/colors.dart';
 
 AppBar wAppBar(BuildContext context, {String? text}) {
   return AppBar(

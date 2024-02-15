@@ -1,10 +1,10 @@
-import 'package:absensi_mattaher/pages/user/widget/appbar.dart';
+import 'package:absensi_mattaher/ui/widgets/appbar.dart';
 import 'package:absensi_mattaher/services/database_services.dart';
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
-import '../../../utils/constants/constants.dart';
+import '../../../../utils/constants/constants.dart';
+import '../../../styles/colors.dart';
 
 class LokasiScreen extends StatefulWidget {
   const LokasiScreen({super.key});
@@ -145,8 +145,8 @@ class _LokasiScreenState extends State<LokasiScreen> {
               print('lat $lat');
               print('long $long');
 
-              DataBase().prefSetString(lat!, 'latitude');
-              DataBase().prefSetString(long!, 'longtitude');
+              // DataBase().prefSetString(lat!, 'latitude');
+              // DataBase().prefSetString(long!, 'longtitude');
             },
             style: ButtonStyle(
               backgroundColor: MaterialStatePropertyAll(

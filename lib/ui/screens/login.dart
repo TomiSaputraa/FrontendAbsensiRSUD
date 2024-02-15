@@ -1,14 +1,15 @@
-import 'package:absensi_mattaher/pages/user/home.dart';
+import 'package:absensi_mattaher/ui/screens/user/home.dart';
 import 'package:absensi_mattaher/services/database_services.dart';
 import 'package:absensi_mattaher/repositories/user_repositories.dart';
 import 'package:absensi_mattaher/utils/logging_util.dart';
+import 'package:absensi_mattaher/utils/ui_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-import '../utils/constants/constants.dart';
+import '../styles/colors.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -78,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
       height: 220,
       width: 220,
       child: SvgPicture.asset(
-        'assets/logo rs.svg',
+        UiUtils.getImagesPath('logo rs.svg'),
         fit: BoxFit.cover,
       ),
     );
