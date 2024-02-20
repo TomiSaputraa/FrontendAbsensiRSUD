@@ -1,8 +1,8 @@
 import 'package:absensi_mattaher/ui/screens/user/home/home_screen.dart';
-import 'package:absensi_mattaher/ui/screens/user/home/profile_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../styles/colors.dart';
+import 'profile/profile_screen.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});

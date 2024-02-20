@@ -1,4 +1,5 @@
 import 'package:absensi_mattaher/ui/screens/user/absensi/absensi_screen.dart';
+import 'package:absensi_mattaher/ui/screens/user/home/pulang_screen.dart';
 import 'package:absensi_mattaher/ui/screens/user/jadwal/jadwal_screen.dart';
 import 'package:absensi_mattaher/utils/ui_utils.dart';
 import 'package:flutter/material.dart';
@@ -178,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: 57,
                       child: GestureDetector(
                         onTap: () {
-                          const AbsensiPage().launch(context);
+                          const PulangScreen().launch(context);
                         },
                         child: _button(
                           name: "Pulang",
