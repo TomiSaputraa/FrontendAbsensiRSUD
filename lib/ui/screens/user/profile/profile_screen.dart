@@ -1,9 +1,11 @@
+import 'package:absensi_mattaher/ui/screens/user/profile/history_absensi_screen.dart';
+import 'package:absensi_mattaher/ui/screens/user/profile/update_profil_screen.dart';
 import 'package:absensi_mattaher/ui/styles/colors.dart';
-import 'package:absensi_mattaher/ui/widgets/appbar.dart';
 import 'package:absensi_mattaher/utils/constants/constants.dart';
 import 'package:absensi_mattaher/utils/ui_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -111,10 +113,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             kPrimaryColor, BlendMode.srcIn),
                       ),
                       const SizedBox(width: 10),
-                      Text(
-                        "Update Profil",
-                        style: kTextStyle.copyWith(
-                            color: kPrimaryColor, fontSize: 15),
+                      GestureDetector(
+                        onTap: () {
+                          const UpdateProfilScreen().launch(context);
+                        },
+                        child: Text(
+                          "Update Profil",
+                          style: kTextStyle.copyWith(
+                              color: kPrimaryColor, fontSize: 15),
+                        ),
                       ),
                     ],
                   ),
@@ -131,9 +138,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             kPrimaryColor, BlendMode.srcIn),
                       ),
                       const SizedBox(width: 10),
-                      Text("Riwayat absensi",
-                          style: kTextStyle.copyWith(
-                              color: kPrimaryColor, fontSize: 15)),
+                      GestureDetector(
+                        onTap: () {
+                          const HistoryScreen().launch(context);
+                        },
+                        child: Text("Riwayat absensi",
+                            style: kTextStyle.copyWith(
+                                color: kPrimaryColor, fontSize: 15)),
+                      ),
                     ],
                   ),
                 ),
