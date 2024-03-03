@@ -24,174 +24,176 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                child: Text(
-                  "Waktu absen kerja :",
-                  style: kTextStyle.copyWith(
-                    color: kPrimaryColor,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
+          SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildHeader(),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  child: Text(
+                    "Waktu absen kerja :",
+                    style: kTextStyle.copyWith(
+                      color: kPrimaryColor,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  // Waktu masuk
-                  Container(
-                    height: 70,
-                    width: 120,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      color: Colors.white,
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color(0xFF083B7F),
-                          blurRadius: 5,
-                          offset: Offset(0, 0),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text("Masuk"),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(
-                                UiUtils.getImagesPath('home/clock_icon.svg')),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 5,
-                              ),
-                              decoration: boxDecorationWithRoundedCorners(
-                                backgroundColor: Colors.green,
-                              ),
-                              child: Text(
-                                '08:00',
-                                style: kTextStyle.copyWith(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  // Waktu pulang
-                  Container(
-                    height: 70,
-                    width: 120,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      color: Colors.white,
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color(0xFF083B7F),
-                          blurRadius: 5,
-                          offset: Offset(0, 0),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text("Pulang"),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(
-                                UiUtils.getImagesPath('home/clock_icon.svg')),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 5,
-                              ),
-                              decoration: boxDecorationWithRoundedCorners(
-                                backgroundColor: Colors.red,
-                              ),
-                              child: Text(
-                                '18:00',
-                                style: kTextStyle.copyWith(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 35),
-              Container(
-                width: double.infinity,
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0xFF083B7F),
-                        blurRadius: 5,
-                        offset: Offset(0, 0),
-                      ),
-                    ]),
-                child: Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    SizedBox(
-                      width: 57,
-                      child: GestureDetector(
-                        onTap: () {
-                          const AbsensiPage().launch(context);
-                        },
-                        child: _button(
-                            name: "Absensi",
-                            iconPath: UiUtils.getImagesPath(
-                                'home/icon_fingerprint.svg')),
+                    // Waktu masuk
+                    Container(
+                      height: 70,
+                      width: 120,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                        color: Colors.white,
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color(0xFF083B7F),
+                            blurRadius: 5,
+                            offset: Offset(0, 0),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("Masuk"),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                  UiUtils.getImagesPath('home/clock_icon.svg')),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 5,
+                                ),
+                                decoration: boxDecorationWithRoundedCorners(
+                                  backgroundColor: Colors.green,
+                                ),
+                                child: Text(
+                                  '08:00',
+                                  style: kTextStyle.copyWith(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                    SizedBox(
-                      width: 57,
-                      child: GestureDetector(
-                        onTap: () {
-                          const JadwalScreen().launch(context);
-                        },
-                        child: _button(
-                            name: "Jadwal",
-                            iconPath:
-                                UiUtils.getImagesPath('home/jadwal_icon.svg')),
+                    // Waktu pulang
+                    Container(
+                      height: 70,
+                      width: 120,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                        color: Colors.white,
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color(0xFF083B7F),
+                            blurRadius: 5,
+                            offset: Offset(0, 0),
+                          ),
+                        ],
                       ),
-                    ),
-                    SizedBox(
-                      width: 57,
-                      child: GestureDetector(
-                        onTap: () {
-                          const PulangScreen().launch(context);
-                        },
-                        child: _button(
-                          name: "Pulang",
-                          iconPath:
-                              UiUtils.getImagesPath("home/pulang_icon.svg"),
-                        ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("Pulang"),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                  UiUtils.getImagesPath('home/clock_icon.svg')),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 5,
+                                ),
+                                decoration: boxDecorationWithRoundedCorners(
+                                  backgroundColor: Colors.red,
+                                ),
+                                child: Text(
+                                  '18:00',
+                                  style: kTextStyle.copyWith(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
-              ),
-            ],
+                const SizedBox(height: 35),
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0xFF083B7F),
+                          blurRadius: 5,
+                          offset: Offset(0, 0),
+                        ),
+                      ]),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SizedBox(
+                        width: 57,
+                        child: GestureDetector(
+                          onTap: () {
+                            const AbsensiPage().launch(context);
+                          },
+                          child: _button(
+                              name: "Absensi",
+                              iconPath: UiUtils.getImagesPath(
+                                  'home/icon_fingerprint.svg')),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 57,
+                        child: GestureDetector(
+                          onTap: () {
+                            const JadwalScreen().launch(context);
+                          },
+                          child: _button(
+                              name: "Jadwal",
+                              iconPath: UiUtils.getImagesPath(
+                                  'home/jadwal_icon.svg')),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 57,
+                        child: GestureDetector(
+                          onTap: () {
+                            const PulangScreen().launch(context);
+                          },
+                          child: _button(
+                            name: "Pulang",
+                            iconPath:
+                                UiUtils.getImagesPath("home/pulang_icon.svg"),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

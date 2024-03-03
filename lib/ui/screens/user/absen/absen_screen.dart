@@ -5,6 +5,7 @@ import 'package:absensi_mattaher/ui/widgets/absensi_button.dart';
 import 'package:absensi_mattaher/ui/widgets/appbar.dart';
 import 'package:absensi_mattaher/services/database_services.dart';
 import 'package:absensi_mattaher/repositories/absensi_repositories.dart';
+import 'package:absensi_mattaher/ui/widgets/konfirmasi_button.dart';
 import 'package:absensi_mattaher/utils/ui_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -91,9 +92,14 @@ class _AbsenPageState extends State<AbsenPage> {
                       ),
               ],
             ),
-            ElevatedButton(
-              onPressed: () async {
+            wKonfirmasiButton(
+              function: () async {
                 try {
+                  if (imagePath.length < 20) {
+                    print("object");
+                    return;
+                  }
+                  log("value");
                   // print(imagePath);
                   var idUser = await DataBase().storageGetString('id_user');
                   var lat = await DataBase().prefGetString('latitude');
@@ -121,12 +127,6 @@ class _AbsenPageState extends State<AbsenPage> {
                   }
                 }
               },
-              style: const ButtonStyle(
-                backgroundColor: MaterialStatePropertyAll(
-                  kPrimaryColor,
-                ),
-              ),
-              child: const Text('Konfirmasi'),
             ),
           ],
         ),

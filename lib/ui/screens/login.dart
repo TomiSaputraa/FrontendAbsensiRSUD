@@ -114,35 +114,37 @@ class _LoginScreenState extends State<LoginScreen> {
     return ElevatedButton(
       onPressed: () async {
         if (idUserController.text.isEmpty) {
-          printWarning('id user kosong');
+          UiUtils.setSnackbar(context, text: "Id tidak boleh kosong");
         } else if (passwordController.text.isEmpty) {
-          printWarning('Password tidak boleh kosong');
+          UiUtils.setSnackbar(context, text: "Password tidak boleh kosong");
         } else {
           try {
-            print(idUserController.text);
-            print(passwordController.text);
             var response = await UserRepositories().login(
               idUser: idUserController.text,
               password: passwordController.text,
             );
-
             print("response : $response");
+
+            // simpan token dan id user ke sharedpreferences
             await DataBase()
                 .storageSaveString('token', response!['accessToken']);
             await DataBase().storageSaveString('id_user', response!['id_user']);
 
-            // print('model : ${userProfile.namaLengkap}');
+            // fungsi pengecekan apakah token sudah disimpan
+            Map<String, String> allValues = await storage.readAll();
+
+            // navigasi ke halamanan home
             if (mounted) {
               const Home().launch(context);
             }
-
-            // fungsi pengecekan apakah token sudah disimpan
-            Map<String, String> allValues = await storage.readAll();
             log('all data : $allValues');
           } catch (e) {
             if (e is DioException) {
               if (e.response != null) {
                 log('DioError response: ${e.response!.data}');
+                UiUtils.setSnackbar(context,
+                    text:
+                        "Ada kesalahan saat login : ${e.response!.data["status"]}");
               } else {
                 log('DioError request: ${e.requestOptions}');
               }
