@@ -1,3 +1,5 @@
+import 'package:absensi_mattaher/model/user_profile.dart';
+import 'package:absensi_mattaher/repositories/user_repositories.dart';
 import 'package:absensi_mattaher/ui/screens/user/absensi/absensi_screen.dart';
 import 'package:absensi_mattaher/ui/screens/user/home/pulang_screen.dart';
 import 'package:absensi_mattaher/ui/screens/user/jadwal/jadwal_screen.dart';
@@ -11,14 +13,22 @@ import '../../../../utils/constants/constants.dart';
 import '../../../styles/colors.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, this.response});
-  final Map? response;
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final UserRepositories _userRepositories = UserRepositories();
+  late Future<UserProfile> _userProfile;
+
+  @override
+  void initState() {
+    super.initState();
+    _userProfile = _userRepositories.userProfileInfo();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -213,49 +223,58 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       child: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              // crossAxisAlignment: CrossAxisAlignment.start,
+        child: FutureBuilder(
+          future: _userProfile,
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            if (!snapshot.hasData) {
+              return Text("No data", style: kTextStyle);
+            } else if (snapshot.hasError) {
+              UiUtils.setSnackbar(context,
+                  text: "Ada kesalahan saat proses data");
+            }
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                CircleAvatar(
-                  radius: 25,
-                  backgroundImage: AssetImage(
-                    UiUtils.getImagesPath('foto.png'),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      "Tomi saputra",
-                      style: kTextStyle.copyWith(
-                        color: kPrimaryColor,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    CircleAvatar(
+                      radius: 25,
+                      backgroundImage:
+                          NetworkImage(apiUrl + snapshot.data.fotoProfil),
                     ),
-                    Text(
-                      "Administrasi",
-                      style: kTextStyle.copyWith(color: Colors.white),
+                    const SizedBox(width: 12),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          snapshot.data.namaLengkap,
+                          style: kTextStyle.copyWith(
+                            color: kPrimaryColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          snapshot.data.jabatan,
+                          style: kTextStyle.copyWith(color: Colors.white),
+                        ),
+                      ],
                     ),
                   ],
                 ),
+                Text(
+                  'Selamat datang, Jangan lupa absen hari ini \n 12-03-2024',
+                  textAlign: TextAlign.center,
+                  style: kTextStyle.copyWith(
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ],
-            ),
-            Text(
-              'Selamat datang, Jangan lupa absen hari ini \n 12-03-2024',
-              textAlign: TextAlign.center,
-              style: kTextStyle.copyWith(
-                fontSize: 16,
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );

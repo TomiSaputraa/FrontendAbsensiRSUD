@@ -25,7 +25,7 @@ class UserRepositories {
     }
   }
 
-  Future<dynamic> userProfileInfo() async {
+  Future<UserProfile> userProfileInfo() async {
     String? token = await DataBase().storageGetString('token');
     String? idUser = await DataBase().storageGetString('id_user');
     Uri url = Uri.parse(userApiUrl + idUser!);
@@ -40,6 +40,7 @@ class UserRepositories {
       return UserProfile.fromJson(response.data);
     } else {
       print('Ada kesalahan saat mendapatkan informasi user');
+      throw Exception('Failed to load user');
     }
   }
 }
