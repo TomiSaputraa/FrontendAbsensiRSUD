@@ -1,12 +1,14 @@
+import 'package:absensi_mattaher/model/absensi_model.dart';
 import 'package:absensi_mattaher/model/user_profile.dart';
+import 'package:absensi_mattaher/repositories/absensi_repositories.dart';
 import 'package:absensi_mattaher/repositories/user_repositories.dart';
 import 'package:absensi_mattaher/ui/screens/user/absensi/absensi_screen.dart';
 import 'package:absensi_mattaher/ui/screens/user/home/pulang_screen.dart';
 import 'package:absensi_mattaher/ui/screens/user/jadwal/jadwal_screen.dart';
 import 'package:absensi_mattaher/utils/ui_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../../../utils/constants/constants.dart';
@@ -21,12 +23,49 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final UserRepositories _userRepositories = UserRepositories();
-  late Future<UserProfile> _userProfile;
+  final AbsensiRepositories _absensiRepositories = AbsensiRepositories();
+  Future<UserProfile>? _userProfile;
+  Future<AbsensiModel>? _absensi;
+  String? _curentDateTime;
+  String _jamMasuk = "--:--";
+  String _waktuPulang = "--:--";
 
   @override
   void initState() {
     super.initState();
     _userProfile = _userRepositories.userProfileInfo();
+    _absensi = _absensiRepositories.getLatAbsensi();
+    getCurrentDate();
+    getHourAbsesi();
+  }
+
+  void getCurrentDate() {
+    DateTime now = DateTime.now();
+    String formatDate =
+        "${now.day.toString().padLeft(2, "0")}-${now.month.toString().padLeft(2, "0")}-${now.year}";
+    setState(() {
+      _curentDateTime = formatDate;
+    });
+  }
+
+  void getHourAbsesi() {
+    _absensi!.then(
+      (absensi) {
+        DateTime waktuMasuk =
+            DateTime.parse(absensi.absensi!.tanggalAbsensi.toString());
+        DateFormat format = DateFormat('dd-MM-yyyy');
+        String formatedDate = format.format(waktuMasuk); //result : 04-03-2024
+        // print("absensi function ${formatedDate}");
+
+        // pengecekan apakah ada tanggal absensi yang sama saat ini dengan tanggal sistem
+        if (formatedDate == _curentDateTime) {
+          setState(() {
+            _jamMasuk = absensi.absensi!.waktuMasuk.toString();
+            _waktuPulang = absensi.absensi!.waktuPulang.toString();
+          });
+        }
+      },
+    );
   }
 
   @override
@@ -87,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   backgroundColor: Colors.green,
                                 ),
                                 child: Text(
-                                  '08:00',
+                                  _jamMasuk,
                                   style: kTextStyle.copyWith(
                                     color: Colors.white,
                                   ),
@@ -131,7 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   backgroundColor: Colors.red,
                                 ),
                                 child: Text(
-                                  '18:00',
+                                  _waktuPulang,
                                   style: kTextStyle.copyWith(
                                     color: Colors.white,
                                   ),
@@ -264,7 +303,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 Text(
-                  'Selamat datang, Jangan lupa absen hari ini \n 12-03-2024',
+                  'Selamat datang, Jangan lupa absen hari ini \n $_curentDateTime',
                   textAlign: TextAlign.center,
                   style: kTextStyle.copyWith(
                     fontSize: 16,

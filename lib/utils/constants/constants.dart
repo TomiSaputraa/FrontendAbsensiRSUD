@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 // Font
@@ -9,5 +8,7 @@ const apiUrl = "http://10.0.2.2:3000/";
 const userApiUrl = 'http://10.0.2.2:3000/api/users/';
 const loginUrl = '${userApiUrl}login';
 
-const absensiUrl = 'http://10.0.2.2:3000/api/absensi/';
+// absensi
+const absensiUrl = '${apiUrl}api/absensi/';
 const createAbsensiUrl = '${absensiUrl}create';
+const checkLastAbsensi = "${absensiUrl}checkAbsesiToday";

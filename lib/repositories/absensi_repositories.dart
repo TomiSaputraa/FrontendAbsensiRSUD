@@ -1,9 +1,12 @@
 import 'dart:io';
 
+import 'package:absensi_mattaher/model/absensi_model.dart';
 import 'package:absensi_mattaher/utils/constants/constants.dart';
 import 'package:dio/dio.dart';
 
-class Absensi {
+import '../services/database_services.dart';
+
+class AbsensiRepositories {
   final Dio dio = Dio();
 
   Future createAbsensi({
@@ -63,6 +66,22 @@ class Absensi {
         print(e.requestOptions);
         print(e.message);
       }
+    }
+  }
+
+  Future<AbsensiModel> getLatAbsensi() async {
+    String? token = await DataBase().storageGetString('token');
+    Uri url = Uri.parse(checkLastAbsensi);
+
+    var response = await dio.get(url.toString(),
+        options: Options(headers: {'Authorization': 'Bearer $token'}));
+
+    // print("response absensi : ${response.data}");
+
+    if (response.statusCode == 200) {
+      return AbsensiModel.fromJson(response.data);
+    } else {
+      throw Exception("Gagal mendapatkan data absensi");
     }
   }
 }

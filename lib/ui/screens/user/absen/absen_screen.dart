@@ -106,7 +106,7 @@ class _AbsenPageState extends State<AbsenPage> {
                   var long = await DataBase().prefGetString('longtitude');
                   var token = await DataBase().storageGetString('token');
 
-                  await Absensi().createAbsensi(
+                  await AbsensiRepositories().createAbsensi(
                     idUser: idUser!,
                     latitudeMasuk: lat!,
                     longtitudeMasuk: long!,
