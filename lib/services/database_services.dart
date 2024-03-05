@@ -42,8 +42,9 @@ class DataBase {
     return preferences.getString(key);
   }
 
-  Future<void> prefRemoveToken() async {
+  /// Fungsi ini menghapus data key dan value dari sharedprefences yang tersimpan
+  Future<void> prefRemoveToken(String key) async {
     SharedPreferences preferences = await _prefs;
-    await preferences.remove('token');
+    await preferences.remove(key);
   }
 }

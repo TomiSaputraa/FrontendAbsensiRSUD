@@ -1,5 +1,7 @@
 import 'package:absensi_mattaher/ui/widgets/appbar.dart';
 import 'package:absensi_mattaher/services/database_services.dart';
+import 'package:absensi_mattaher/ui/widgets/konfirmasi_button.dart';
+import 'package:absensi_mattaher/utils/ui_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -23,24 +25,21 @@ class _LokasiScreenState extends State<LokasiScreen> {
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              'Location services are disabled. Please enable the services')));
+      UiUtils.setSnackbar(context,
+          text: "Lokasi tidak di aktifkan, mohon aktifkan!");
       return false;
     }
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Location permissions are denied')));
+        UiUtils.setSnackbar(context, text: "Permintaan lokasi ditolak");
         return false;
       }
     }
     if (permission == LocationPermission.deniedForever) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              'Location permissions are permanently denied, we cannot request permissions.')));
+      UiUtils.setSnackbar(context,
+          text: "Lokasi ditolak permanen, mohon hidupkan izin lokasi");
       return false;
     }
     return true;
@@ -138,6 +137,8 @@ class _LokasiScreenState extends State<LokasiScreen> {
           ),
           ElevatedButton(
             onPressed: () async {
+              UiUtils.setSnackbar(context,
+                  text: "Proses mendapatkan lokasi harap tunggu...");
               await _getCurrentPosition();
 
               String? lat = _currentPosition?.latitude.toString();
@@ -163,30 +164,15 @@ class _LokasiScreenState extends State<LokasiScreen> {
               ),
             ),
           ),
-          ElevatedButton(
-            onPressed: () async {
-              var getDatabase = await DataBase().prefGetString('latitude');
-              var getDatabaselong =
-                  await DataBase().prefGetString('longtitude');
+          wKonfirmasiButton(function: () async {
+            var getDatabaselat = await DataBase().prefGetString('latitude');
+            var getDatabaselong = await DataBase().prefGetString('longtitude');
 
-              print('latitudeKey secure: $getDatabase');
-              print('longtitude secure: $getDatabaselong');
-              // ignore: use_build_context_synchronously
-              Navigator.pop(context);
-            },
-            style: const ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll(kPrimaryColor),
-            ),
-            child: const Text(
-              'Konfirmasi',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-                height: 0,
-              ),
-            ),
-          ),
+            print('latitude: $getDatabaselat');
+            print('longtitude: $getDatabaselong');
+
+            Navigator.pop(context);
+          }),
         ],
       ),
     );

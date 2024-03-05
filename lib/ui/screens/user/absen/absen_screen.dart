@@ -158,12 +158,14 @@ class _AbsenPageState extends State<AbsenPage> {
                   await AbsensiRepositories().createAbsensi(
                     kodeShift: dropdownValue,
                     latitudeMasuk: lat!,
-                    longtitudeMasuk: long!,
+                    longitudeMasuk: long!,
                     fotoMasuk: imageFile,
                   );
 
                   if (mounted) {
-                    // Navigator.pop(context);
+                    DataBase().prefRemoveToken("latitude");
+                    DataBase().prefRemoveToken("longtitude");
+                    Navigator.pop(context);
                   }
                 } catch (e) {
                   if (e is DioException) {

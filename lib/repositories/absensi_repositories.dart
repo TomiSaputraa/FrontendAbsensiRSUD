@@ -14,9 +14,9 @@ class AbsensiRepositories {
     String? telatMasuk,
     String? telatPulang,
     required String latitudeMasuk,
-    required String longtitudeMasuk,
+    required String longitudeMasuk,
     String? latitudePulang,
-    String? longtitudePulang,
+    String? longitudePulang,
     required File fotoMasuk,
   }) async {
     var token = await DataBase().storageGetString('token');
@@ -33,9 +33,9 @@ class AbsensiRepositories {
           "telat_masuk": telatMasuk,
           "telat_pulang": telatPulang,
           "latitude_masuk": latitudeMasuk,
-          "longtitude_masuk": longtitudeMasuk,
-          "latitude_pulang": latitudeMasuk,
-          "longtitude_pulang": longtitudeMasuk,
+          "longitude_masuk": longitudeMasuk,
+          "latitude_pulang": latitudePulang,
+          "longtitude_pulang": longitudePulang,
           'file': await MultipartFile.fromFile(
             fotoMasuk.path, // Sumber foto
             filename: fotoMasuk.path

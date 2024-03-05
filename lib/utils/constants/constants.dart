@@ -4,7 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 final kTextStyle = GoogleFonts.poppins();
 
 // endpoint api
-const apiUrl = "http://10.0.2.2:3000/";
+const apiUrl = "https://fond-greatly-lion.ngrok-free.app/";
+// const apiUrl = "http://10.0.2.2:3000/";
 
 // user
 const userApiUrl = '${apiUrl}api/users/';
