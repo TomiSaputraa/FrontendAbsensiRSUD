@@ -1,7 +1,6 @@
 import 'package:absensi_mattaher/ui/screens/user/home.dart';
 import 'package:absensi_mattaher/services/database_services.dart';
 import 'package:absensi_mattaher/repositories/user_repositories.dart';
-import 'package:absensi_mattaher/utils/logging_util.dart';
 import 'package:absensi_mattaher/utils/ui_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -118,6 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
         } else if (passwordController.text.isEmpty) {
           UiUtils.setSnackbar(context, text: "Password tidak boleh kosong");
         } else {
+          UiUtils.setSnackbar(context, text: "Proses masuk...");
           try {
             var response = await UserRepositories().login(
               idUser: idUserController.text,

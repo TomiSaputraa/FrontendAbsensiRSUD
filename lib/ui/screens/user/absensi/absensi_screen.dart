@@ -1,3 +1,4 @@
+import 'package:absensi_mattaher/repositories/absensi_repositories.dart';
 import 'package:absensi_mattaher/ui/screens/user/absen/absen_screen.dart';
 import 'package:absensi_mattaher/ui/screens/user/absensi/cuti_screen.dart';
 import 'package:absensi_mattaher/ui/screens/user/absensi/izin_screen.dart';
@@ -6,9 +7,10 @@ import 'package:absensi_mattaher/ui/widgets/absensi_button.dart';
 import 'package:absensi_mattaher/ui/widgets/appbar.dart';
 import 'package:absensi_mattaher/utils/ui_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-import '../../../../utils/constants/constants.dart';
+import '../../../../model/absensi_model.dart';
 import '../../../styles/colors.dart';
 
 class AbsensiPage extends StatefulWidget {
@@ -21,7 +23,10 @@ class _AbsensiPageState extends State<AbsensiPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: wAppBar(context, text: 'Absensi'),
+      appBar: wAppBar(
+        context,
+        text: 'Absensi',
+      ),
       body: Center(
         child: SingleChildScrollView(
           child: Column(

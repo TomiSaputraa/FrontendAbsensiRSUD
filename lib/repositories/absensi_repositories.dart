@@ -10,26 +10,34 @@ class AbsensiRepositories {
   final Dio dio = Dio();
 
   Future createAbsensi({
-    required String idUser,
-    String? jamMasuk,
-    String? tanggalAbsensi,
+    required String kodeShift,
+    String? telatMasuk,
+    String? telatPulang,
     required String latitudeMasuk,
     required String longtitudeMasuk,
+    String? latitudePulang,
+    String? longtitudePulang,
     required File fotoMasuk,
-    String? token,
   }) async {
+    var token = await DataBase().storageGetString('token');
+    var idUser = await DataBase().storageGetString('id_user');
     Uri url = Uri.parse(createAbsensiUrl);
 
     try {
-      // cek ambil foto dari mana
+      // cek sumber foto
       // print('foto masuk dari repo : ' + fotoMasuk!.path);
       FormData formData = FormData.fromMap(
         {
           "id_user": idUser,
+          "kode_shift": kodeShift,
+          "telat_masuk": telatMasuk,
+          "telat_pulang": telatPulang,
           "latitude_masuk": latitudeMasuk,
           "longtitude_masuk": longtitudeMasuk,
+          "latitude_pulang": latitudeMasuk,
+          "longtitude_pulang": longtitudeMasuk,
           'file': await MultipartFile.fromFile(
-            fotoMasuk.path, // Ambil file foto dari mana
+            fotoMasuk.path, // Sumber foto
             filename: fotoMasuk.path
                 .split('/')
                 .last, // setelah di ambil jika di upload ingin nama file nya jadi apa
@@ -50,9 +58,9 @@ class AbsensiRepositories {
       );
 
       if (response.statusCode == 201) {
-        print("Pendaftaran berhasil: ${response.data}");
+        print("Absensi berhasil: ${response.data}");
       } else {
-        print("Pendaftaran gagal: ${response.statusCode}");
+        print("Absensi gagal: ${response.statusCode}");
       }
     } on DioException catch (e) {
       // The request was made and the server responded with a status code
@@ -69,7 +77,7 @@ class AbsensiRepositories {
     }
   }
 
-  Future<AbsensiModel> getLatAbsensi() async {
+  Future<AbsensiModel> getLastAbsensi() async {
     String? token = await DataBase().storageGetString('token');
     Uri url = Uri.parse(checkLastAbsensi);
 

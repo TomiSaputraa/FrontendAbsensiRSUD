@@ -5,7 +5,9 @@ final kTextStyle = GoogleFonts.poppins();
 
 // endpoint api
 const apiUrl = "http://10.0.2.2:3000/";
-const userApiUrl = 'http://10.0.2.2:3000/api/users/';
+
+// user
+const userApiUrl = '${apiUrl}api/users/';
 const loginUrl = '${userApiUrl}login';
 
 // absensi

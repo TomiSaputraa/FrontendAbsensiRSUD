@@ -34,8 +34,14 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _userProfile = _userRepositories.userProfileInfo();
-    _absensi = _absensiRepositories.getLatAbsensi();
+    _absensi = _absensiRepositories.getLastAbsensi();
     getCurrentDate();
+    getHourAbsesi();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     getHourAbsesi();
   }
 
@@ -205,7 +211,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 57,
                         child: GestureDetector(
                           onTap: () {
-                            const AbsensiPage().launch(context);
+                            const AbsensiPage().launch(context).then((value) {
+                              setState(() {});
+                            });
+                            ;
                           },
                           child: _button(
                               name: "Absensi",
@@ -217,7 +226,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 57,
                         child: GestureDetector(
                           onTap: () {
-                            const JadwalScreen().launch(context);
+                            const JadwalScreen().launch(context).then((value) {
+                              setState(() {});
+                            });
                           },
                           child: _button(
                               name: "Jadwal",
@@ -229,7 +240,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 57,
                         child: GestureDetector(
                           onTap: () {
-                            const PulangScreen().launch(context);
+                            const PulangScreen().launch(context).then((value) {
+                              setState(() {});
+                            });
                           },
                           child: _button(
                             name: "Pulang",

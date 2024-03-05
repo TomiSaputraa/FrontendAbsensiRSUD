@@ -15,6 +15,19 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../../../utils/constants/constants.dart';
 import '../../../styles/colors.dart';
 
+const List<String> list = <String>[
+  'L',
+  'P1',
+  'P2',
+  'J',
+  'J1',
+  'SB',
+  'SB1',
+  'SB3',
+  'S1',
+  'N'
+];
+
 class AbsenPage extends StatefulWidget {
   const AbsenPage({super.key});
   @override
@@ -28,6 +41,7 @@ class _AbsenPageState extends State<AbsenPage> {
   File imageFile = File('No data');
   String imagePath = 'No image path';
   XFile? pickedImage;
+  String dropdownValue = list.first;
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +88,39 @@ class _AbsenPageState extends State<AbsenPage> {
                 ),
               ],
             ),
+            Column(
+              children: [
+                Text(
+                  "Pilih kode shift :",
+                  style: kTextStyle,
+                ),
+                SizedBox(
+                  width: 100,
+                  child: DropdownButton<String>(
+                    isExpanded: true,
+                    value: dropdownValue,
+                    icon: const Icon(Icons.keyboard_arrow_down),
+                    elevation: 16,
+                    style: const TextStyle(color: kPrimaryColor),
+                    underline: Container(
+                      height: 2,
+                      color: kPrimaryColor,
+                    ),
+                    onChanged: (String? value) {
+                      setState(() {
+                        dropdownValue = value!;
+                      });
+                    },
+                    items: list.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -87,7 +134,7 @@ class _AbsenPageState extends State<AbsenPage> {
                         style: kTextStyle,
                       )
                     : Text(
-                        'Gagal',
+                        'Belum ada foto',
                         style: kTextStyle,
                       ),
               ],
@@ -95,27 +142,28 @@ class _AbsenPageState extends State<AbsenPage> {
             wKonfirmasiButton(
               function: () async {
                 try {
-                  if (imagePath.length < 20) {
-                    print("object");
+                  if (imagePath.isEmpty || imagePath == 'No image path') {
+                    UiUtils.setSnackbar(context,
+                        text: "Foto tidak boleh kosong");
                     return;
                   }
-                  log("value");
-                  // print(imagePath);
-                  var idUser = await DataBase().storageGetString('id_user');
+
+                  print(imagePath.length);
+
                   var lat = await DataBase().prefGetString('latitude');
                   var long = await DataBase().prefGetString('longtitude');
-                  var token = await DataBase().storageGetString('token');
+                  // var kodeShift = await DataBase().prefGetString('kodeShift');
 
+                  // print("kodeShift $kodeShift");
                   await AbsensiRepositories().createAbsensi(
-                    idUser: idUser!,
+                    kodeShift: dropdownValue,
                     latitudeMasuk: lat!,
                     longtitudeMasuk: long!,
                     fotoMasuk: imageFile,
-                    token: token,
                   );
 
                   if (mounted) {
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
                   }
                 } catch (e) {
                   if (e is DioException) {

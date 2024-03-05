@@ -145,8 +145,8 @@ class _LokasiScreenState extends State<LokasiScreen> {
               print('lat $lat');
               print('long $long');
 
-              // DataBase().prefSetString(lat!, 'latitude');
-              // DataBase().prefSetString(long!, 'longtitude');
+              DataBase().prefSetString(lat!, 'latitude');
+              DataBase().prefSetString(long!, 'longtitude');
             },
             style: ButtonStyle(
               backgroundColor: MaterialStatePropertyAll(
