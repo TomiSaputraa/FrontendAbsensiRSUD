@@ -81,11 +81,9 @@ class _AbsenPageState extends State<AbsenPage> {
                   onTap: () async {
                     // Navigasi ke halama berikutnya
                     bool result = await const LokasiScreen().launch(context);
-                    if (result != null) {
-                      setState(() {
-                        isLokasiDone = result;
-                      });
-                    }
+                    setState(() {
+                      isLokasiDone = result;
+                    });
                   },
                   child: absensiButton(
                       assetPath: UiUtils.getImagesPath('lokasi_icon.svg'),
