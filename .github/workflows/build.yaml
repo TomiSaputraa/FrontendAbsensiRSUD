@@ -3,15 +3,29 @@ name: Build and Release Flutter App
 on:
   push:
     branches:
+<<<<<<< HEAD
       - main
+=======
+      - master 
+
+name: Build My Apps
+>>>>>>> 03c4d25301814baa8193cddd6faa8ed0a8b331d4
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
+<<<<<<< HEAD
       - name: Checkout Repository
         uses: actions/checkout@v2
+=======
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v2
+        with:
+          distribution: "zulu"
+          java-version: "11" 
+>>>>>>> 03c4d25301814baa8193cddd6faa8ed0a8b331d4
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
