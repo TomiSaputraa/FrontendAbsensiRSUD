@@ -52,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _absensi!.then(
       (absensi) {
         DateTime waktuMasuk =
-            DateTime.parse(absensi.absensi!.tanggalAbsensi.toString());
+            DateTime.parse(absensi.absensi[0].tanggalAbsensi.toString());
         DateFormat format = DateFormat('dd-MM-yyyy');
         String formatedDate = format.format(waktuMasuk); //result : 04-03-2024
         // print("absensi function ${formatedDate}");
@@ -60,8 +60,8 @@ class _HomeScreenState extends State<HomeScreen> {
         // pengecekan apakah ada tanggal absensi yang sama saat ini dengan tanggal sistem
         if (formatedDate == _curentDateTime) {
           setState(() {
-            _jamMasuk = absensi.absensi!.waktuMasuk.toString();
-            _waktuPulang = absensi.absensi!.waktuPulang.toString();
+            _jamMasuk = absensi.absensi[0].waktuMasuk.toString();
+            _waktuPulang = absensi.absensi[0].waktuPulang.toString();
           });
         }
       },

@@ -3,17 +3,19 @@ class AbsensiModel {
     required this.absensi,
   });
 
-  final Absensi? absensi;
+  final List<Absensi> absensi;
 
   factory AbsensiModel.fromJson(Map<String, dynamic> json) {
     return AbsensiModel(
-      absensi:
-          json["Absensi"] == null ? null : Absensi.fromJson(json["Absensi"]),
+      absensi: json["Absensi"] == null
+          ? []
+          : List<Absensi>.from(
+              json["Absensi"]!.map((x) => Absensi.fromJson(x))),
     );
   }
 
   Map<String, dynamic> toJson() => {
-        "Absensi": absensi?.toJson(),
+        "Absensi": absensi.map((x) => x?.toJson()).toList(),
       };
 }
 
@@ -42,11 +44,11 @@ class Absensi {
   final String? waktuMasuk;
   final String? waktuPulang;
   final String? telatMasuk;
-  final dynamic telatPulang;
+  final String? telatPulang;
   final String? latitudeMasuk;
   final String? longitudeMasuk;
   final String? latitudePulang;
-  final String? longitudePulang;
+  final dynamic longitudePulang;
   final String? fotoMasuk;
   final String? statusHadir;
 

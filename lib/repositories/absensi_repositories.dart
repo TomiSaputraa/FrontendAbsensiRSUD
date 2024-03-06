@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:absensi_mattaher/model/absensi_model.dart';
@@ -78,18 +80,49 @@ class AbsensiRepositories {
   }
 
   Future<AbsensiModel> getLastAbsensi() async {
+    try {
+      String? token = await DataBase().storageGetString('token');
+      Uri url = Uri.parse(checkLastAbsensi);
+
+      var response = await dio.get(url.toString(),
+          options: Options(headers: {'Authorization': 'Bearer $token'}));
+
+      // print("response absensi : ${response.data}");
+
+      if (response.statusCode == 200) {
+        return AbsensiModel.fromJson(response.data);
+      } else if (response.statusCode == 401) {
+        throw Exception("Sesi login telah berakhir");
+      } else {
+        throw Exception("Gagal mendapatkan data absensi");
+      }
+    } on DioException catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future updateAbsensi({int? idAbsen, String? kodeShift}) async {
     String? token = await DataBase().storageGetString('token');
-    Uri url = Uri.parse(checkLastAbsensi);
+    Uri url = Uri.parse(absensiUrl + idAbsen.toString());
 
-    var response = await dio.get(url.toString(),
-        options: Options(headers: {'Authorization': 'Bearer $token'}));
+    Map<String, dynamic> data = <String, dynamic>{
+      "kode_shift": kodeShift,
+    };
 
-    // print("response absensi : ${response.data}");
+    var response = await dio.put(
+      url.toString(),
+      data: data,
+      options: Options(
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      ),
+    );
 
     if (response.statusCode == 200) {
-      return AbsensiModel.fromJson(response.data);
+      print("Update Absensi berhasil: ${response.data}");
     } else {
-      throw Exception("Gagal mendapatkan data absensi");
+      print("Absensi gagal: ${response.statusCode}");
     }
   }
 }
