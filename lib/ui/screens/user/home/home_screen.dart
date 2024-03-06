@@ -205,9 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 57,
                         child: GestureDetector(
                           onTap: () {
-                            const AbsensiPage().launch(context).then((value) {
-                              setState(() {});
-                            });
+                            const AbsensiPage().launch(context);
                           },
                           child: _button(
                               name: "Absensi",
@@ -233,9 +231,37 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 57,
                         child: GestureDetector(
                           onTap: () {
-                            const PulangScreen().launch(context).then((value) {
-                              setState(() {});
-                            });
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text(
+                                    "Konfirmasi pulang",
+                                    style: kTextStyle.copyWith(fontSize: 15),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  content: const Text(
+                                      "Apakah kamu yakin ingin pulang?"),
+                                  actionsAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  actions: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text("Tidak"),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        _absensiRepositories.updateAbsensi()
+                                      },
+                                      child: const Text("Ya"),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                            // const PulangScreen().launch(context);
                           },
                           child: _button(
                             name: "Pulang",

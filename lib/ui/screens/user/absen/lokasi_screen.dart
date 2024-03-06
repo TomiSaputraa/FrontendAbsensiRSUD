@@ -160,8 +160,8 @@ class _LokasiScreenState extends State<LokasiScreen> {
                   text: "Proses mendapatkan lokasi harap tunggu...");
               await _getCurrentPosition();
 
-              String? lat = _currentPosition?.latitude.toString();
-              String? long = _currentPosition?.longitude.toString();
+              String? lat = await _currentPosition?.latitude.toString();
+              String? long = await _currentPosition?.longitude.toString();
               print('lat $lat');
               print('long $long');
 
