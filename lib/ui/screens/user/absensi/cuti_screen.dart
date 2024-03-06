@@ -35,7 +35,7 @@ class _CutiScreenState extends State<CutiScreen> {
         child: Form(
           key: _formKey,
           child: Container(
-            padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
             child: Column(
               children: [
                 TextField(

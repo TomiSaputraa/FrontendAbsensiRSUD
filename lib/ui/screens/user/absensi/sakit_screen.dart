@@ -22,7 +22,7 @@ class _SakitScreenState extends State<SakitScreen> {
   final TextEditingController _dateEndController = TextEditingController();
   final TextEditingController _alasanController = TextEditingController();
 
-  SakitRepositories _sakitRepositories = SakitRepositories();
+  final SakitRepositories _sakitRepositories = SakitRepositories();
 
   final ImagePicker _imagePicker = ImagePicker();
   File imageFile = File('No data');
@@ -44,7 +44,7 @@ class _SakitScreenState extends State<SakitScreen> {
         child: Form(
           key: _formKey,
           child: Container(
-            padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
             child: Column(
               children: [
                 TextField(

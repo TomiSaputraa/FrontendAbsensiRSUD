@@ -62,7 +62,7 @@ class _PulangScreenState extends State<PulangScreen> {
                 ],
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             // Text("Kamu belum bisa absen pulang"),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

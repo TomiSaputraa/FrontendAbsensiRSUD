@@ -208,7 +208,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             const AbsensiPage().launch(context).then((value) {
                               setState(() {});
                             });
-                            ;
                           },
                           child: _button(
                               name: "Absensi",

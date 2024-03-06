@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../ui/styles/colors.dart';
-import 'constants/constants.dart';
 
 class UiUtils {
   static void setSnackbar(BuildContext context, {String? text}) {

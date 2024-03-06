@@ -2,7 +2,6 @@ import 'package:absensi_mattaher/ui/widgets/appbar.dart';
 import 'package:absensi_mattaher/ui/widgets/konfirmasi_button.dart';
 import 'package:absensi_mattaher/utils/ui_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class UpdateProfilScreen extends StatefulWidget {
   const UpdateProfilScreen({super.key});
@@ -32,16 +31,16 @@ class _UpdateProfilScreenState extends State<UpdateProfilScreen> {
                     children: [
                       TextFormField(
                           initialValue: "Tomi saputra",
-                          decoration: InputDecoration(hintText: "Nama")),
+                          decoration: const InputDecoration(hintText: "Nama")),
                       TextFormField(
                           initialValue: "Tomi@gmail.com",
-                          decoration: InputDecoration(hintText: "Email")),
+                          decoration: const InputDecoration(hintText: "Email")),
                       TextFormField(
                           initialValue: "081212341234",
                           decoration:
-                              InputDecoration(hintText: "Nomor Handphone")),
+                              const InputDecoration(hintText: "Nomor Handphone")),
                       TextFormField(
-                          decoration: InputDecoration(hintText: "Password")),
+                          decoration: const InputDecoration(hintText: "Password")),
                       const SizedBox(height: 25),
                       wKonfirmasiButton(function: () {})
                     ],
