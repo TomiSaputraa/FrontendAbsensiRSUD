@@ -37,9 +37,19 @@ class DataBase {
     preferences.setString(key, data);
   }
 
+  void prefSetBool(String key, bool value) async {
+    SharedPreferences preferences = await _prefs;
+    preferences.setBool(key, value);
+  }
+
   Future<String?> prefGetString(String key) async {
     SharedPreferences preferences = await _prefs;
     return preferences.getString(key);
+  }
+
+  Future<bool?> prefGetBool(String key) async {
+    SharedPreferences preferences = await _prefs;
+    return preferences.getBool(key);
   }
 
   /// Fungsi ini menghapus data key dan value dari sharedprefences yang tersimpan

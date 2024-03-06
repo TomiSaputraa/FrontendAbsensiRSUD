@@ -196,7 +196,7 @@ class _LokasiScreenState extends State<LokasiScreen> {
               print('longitude: $getDatabaseLong');
 
               if (mounted) {
-                Navigator.pop(context);
+                Navigator.pop(context, true);
               }
             } else {
               // Tampilkan pesan karena pengguna berada di luar range lokasi yang diizinkan

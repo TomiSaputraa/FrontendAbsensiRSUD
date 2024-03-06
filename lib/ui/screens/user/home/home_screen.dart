@@ -39,12 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
     getHourAbsesi();
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    getHourAbsesi();
-  }
-
   void getCurrentDate() {
     DateTime now = DateTime.now();
     String formatDate =

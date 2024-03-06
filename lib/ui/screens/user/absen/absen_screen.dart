@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:absensi_mattaher/ui/screens/user/absen/lokasi_screen.dart';
 import 'package:absensi_mattaher/ui/widgets/absensi_button.dart';
 import 'package:absensi_mattaher/ui/widgets/appbar.dart';
@@ -36,6 +35,7 @@ class AbsenPage extends StatefulWidget {
 
 class _AbsenPageState extends State<AbsenPage> {
   bool isFotoDone = false;
+  bool isLokasiDone = false;
 
   final ImagePicker _imagePicker = ImagePicker();
   File imageFile = File('No data');
@@ -79,8 +79,14 @@ class _AbsenPageState extends State<AbsenPage> {
                       label: 'Foto'),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    const LokasiScreen().launch(context);
+                  onTap: () async {
+                    // Navigasi ke halama berikutnya
+                    bool result = await const LokasiScreen().launch(context);
+                    if (result != null) {
+                      setState(() {
+                        isLokasiDone = result;
+                      });
+                    }
                   },
                   child: absensiButton(
                       assetPath: UiUtils.getImagesPath('lokasi_icon.svg'),
@@ -121,44 +127,63 @@ class _AbsenPageState extends State<AbsenPage> {
                 ),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            Column(
               children: [
-                Text(
-                  'Foto : ',
-                  style: kTextStyle,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Foto : ',
+                      style: kTextStyle,
+                    ),
+                    isFotoDone == true
+                        ? Text(
+                            'Berhasil',
+                            style: kTextStyle,
+                          )
+                        : Text(
+                            'Belum ada foto',
+                            style: kTextStyle,
+                          ),
+                  ],
                 ),
-                isFotoDone == true
-                    ? Text(
-                        'Berhasil',
-                        style: kTextStyle,
-                      )
-                    : Text(
-                        'Belum ada foto',
-                        style: kTextStyle,
-                      ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Lokasi : ',
+                      style: kTextStyle,
+                    ),
+                    isLokasiDone
+                        ? Text(
+                            'Berhasil',
+                            style: kTextStyle,
+                          )
+                        : Text(
+                            'Belum ada lokasi',
+                            style: kTextStyle,
+                          ),
+                  ],
+                ),
               ],
             ),
             wKonfirmasiButton(
               function: () async {
                 try {
+                  print(imagePath.length);
                   if (imagePath.isEmpty || imagePath == 'No image path') {
                     UiUtils.setSnackbar(context,
                         text: "Foto tidak boleh kosong");
                     return;
                   }
 
-                  print(imagePath.length);
-
                   var lat = await DataBase().prefGetString('latitude');
-                  var long = await DataBase().prefGetString('longtitude');
-                  // var kodeShift = await DataBase().prefGetString('kodeShift');
+                  var long = await DataBase().prefGetString('longitude');
 
-                  // print("kodeShift $kodeShift");
                   await AbsensiRepositories().createAbsensi(
                     kodeShift: dropdownValue,
-                    latitudeMasuk: lat!,
-                    longitudeMasuk: long!,
+                    latitudeMasuk: lat.toString(),
+                    longitudeMasuk: long.toString(),
                     fotoMasuk: imageFile,
                   );
 
