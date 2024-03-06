@@ -20,3 +20,15 @@ const loginUrl = '${userApiUrl}login';
 const absensiUrl = '${apiUrl}api/absensi/';
 const createAbsensiUrl = '${absensiUrl}create';
 const checkLastAbsensi = "${absensiUrl}checkAbsesiToday";
+
+// Izin
+const izinUrl = '${apiUrl}api/izin/';
+const createIzinUrl = '${izinUrl}create';
+
+// Cuti
+const cutiUrl = '${apiUrl}api/cuti/';
+const createCutiUrl = '${cutiUrl}create';
+
+// Sakit
+const sakitUrl = '${apiUrl}api/sakit/';
+const createSakitUrl = '${sakitUrl}create';

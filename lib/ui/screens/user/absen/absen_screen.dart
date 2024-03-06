@@ -68,7 +68,6 @@ class _AbsenPageState extends State<AbsenPage> {
                     setState(() {
                       imageFile = File(pickedImage!.path);
                       imagePath = pickedImage!.path;
-                      // DataBaseSharedPref().saveString(imagePath, 'image_path');
                       isFotoDone = !isFotoDone;
                     });
                     debugPrint('Image file : ${imageFile.toString()}');

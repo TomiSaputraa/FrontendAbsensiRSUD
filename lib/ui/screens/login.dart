@@ -135,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
             // navigasi ke halamanan home
             if (mounted) {
-              const Home().launch(context);
+              const Home().launch(context, isNewTask: true);
             }
             log('all data : $allValues');
           } catch (e) {

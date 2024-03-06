@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:absensi_mattaher/repositories/sakit_repositories.dart';
 import 'package:absensi_mattaher/ui/widgets/appbar.dart';
 import 'package:absensi_mattaher/utils/ui_utils.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,8 @@ class _SakitScreenState extends State<SakitScreen> {
   final TextEditingController _dateStartController = TextEditingController();
   final TextEditingController _dateEndController = TextEditingController();
   final TextEditingController _alasanController = TextEditingController();
+
+  SakitRepositories _sakitRepositories = SakitRepositories();
 
   final ImagePicker _imagePicker = ImagePicker();
   File imageFile = File('No data');
@@ -56,7 +59,7 @@ class _SakitScreenState extends State<SakitScreen> {
                     DateTime? pickedDate = await showDatePicker(
                       context: context,
                       initialDate: DateTime.now(),
-                      firstDate: DateTime(2024),
+                      firstDate: DateTime.now(),
                       lastDate: DateTime(2080),
                     );
 
@@ -82,7 +85,7 @@ class _SakitScreenState extends State<SakitScreen> {
                     DateTime? pickedDate = await showDatePicker(
                       context: context,
                       initialDate: DateTime.now(),
-                      firstDate: DateTime(2024),
+                      firstDate: DateTime.now(),
                       lastDate: DateTime(2080),
                     );
 
@@ -117,8 +120,17 @@ class _SakitScreenState extends State<SakitScreen> {
                         color: Colors.grey,
                       ),
                       child: IconButton(
-                        onPressed: () {
-                          print("Add gambar button");
+                        onPressed: () async {
+                          pickedImage = await _imagePicker.pickImage(
+                              source: ImageSource.gallery);
+
+                          setState(() {
+                            imageFile = File(pickedImage!.path);
+                            imagePath = pickedImage!.path;
+                          });
+
+                          debugPrint('Image file : ${imageFile.toString()}');
+                          debugPrint('Image path : ${imagePath.toString()}');
                         },
                         icon: SvgPicture.asset(
                           UiUtils.getImagesPath('addimage_icon.svg'),
@@ -128,21 +140,59 @@ class _SakitScreenState extends State<SakitScreen> {
                       ),
                     ),
                     const SizedBox(width: 20),
-                    const Text('Tambah gambar')
+                    Expanded(
+                      child: Text(
+                        'Tambah gambar : ${imageFile.path.split('/').last}',
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    )
                   ],
                 ),
                 const SizedBox(height: 20),
-                wKonfirmasiButton(function: () {
-                  if (_alasanController.text.isNotEmpty) {
-                    print('Print berhasil guys nih');
-                    print(_dateStartController.text);
-                    print(_dateEndController.text);
-                  } else {
-                    UiUtils.setSnackbar(context,
-                        text: "dak boleh ado yang kosong");
-                    print("Alasan tidak boleh kosong");
-                  }
-                })
+                wKonfirmasiButton(
+                  function: () {
+                    if (_alasanController.text.isNotEmpty) {
+                      print(_dateStartController.text);
+                      print(_dateEndController.text);
+                      String dateString1 = _dateStartController.text;
+                      String dateString2 = _dateEndController.text;
+
+                      DateTime date1 =
+                          DateFormat('yyyy-MM-dd').parse(dateString1);
+                      DateTime date2 =
+                          DateFormat('yyyy-MM-dd').parse(dateString2);
+
+                      if (date1.isBefore(date2) || date1 == date2) {
+                        // Hitung selisih hari
+                        int differenceInDays = date2.difference(date1).inDays;
+                        print("total : $differenceInDays");
+
+                        _sakitRepositories.createSakit(
+                          tanggalMulai: _dateStartController.text,
+                          tanggalSelesai: _dateEndController.text,
+                          alasan: _alasanController.text,
+                          foto: imageFile,
+                          totalHari: differenceInDays.toInt() + 1,
+                        );
+
+                        if (mounted) {
+                          UiUtils.setSnackbar(context,
+                              text: "Data sakit baru berhasil dibuat");
+                          Navigator.pop(context);
+                        }
+                      } else {
+                        // Tampilkan pesan kesalahan jika tanggal mulai tidak berada di bawah tanggal selesai
+                        UiUtils.setSnackbar(context,
+                            text:
+                                "Tanggal mulai harus sebelum tanggal selesai");
+                      }
+                    } else {
+                      UiUtils.setSnackbar(context,
+                          text: "Alasan tidak boleh kosong");
+                      print("Alasan tidak boleh kosong");
+                    }
+                  },
+                )
               ],
             ),
           ),
