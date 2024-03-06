@@ -190,7 +190,6 @@ class _LokasiScreenState extends State<LokasiScreen> {
             if (isInRange) {
               var getDatabaseLat = await DataBase().prefGetString('latitude');
               var getDatabaseLong = await DataBase().prefGetString('longitude');
-              DataBase().prefSetBool("isLokasi", true);
 
               print('latitude: $getDatabaseLat');
               print('longitude: $getDatabaseLong');

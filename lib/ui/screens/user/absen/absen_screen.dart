@@ -170,10 +170,18 @@ class _AbsenPageState extends State<AbsenPage> {
             wKonfirmasiButton(
               function: () async {
                 try {
-                  print(imagePath.length);
+                  // print(imagePath.length);
+                  // Validasi foto
                   if (imagePath.isEmpty || imagePath == 'No image path') {
                     UiUtils.setSnackbar(context,
                         text: "Foto tidak boleh kosong");
+                    return;
+                  }
+
+                  // validasi lokasi
+                  if (!isLokasiDone) {
+                    UiUtils.setSnackbar(context,
+                        text: "Lokasi tidak boleh kosong");
                     return;
                   }
 
@@ -196,6 +204,8 @@ class _AbsenPageState extends State<AbsenPage> {
                   if (e is DioException) {
                     if (e.response != null) {
                       debugPrint('DioError response: ${e.response}');
+                      UiUtils.setSnackbar(context,
+                          text: e.response!.statusCode.toString());
                     } else {
                       debugPrint('DioError request: ${e.requestOptions}');
                     }

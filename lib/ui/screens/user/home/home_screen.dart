@@ -273,7 +273,11 @@ class _HomeScreenState extends State<HomeScreen> {
           future: _userProfile,
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if (!snapshot.hasData) {
-              return Text("No data", style: kTextStyle);
+              return Center(
+                  child: Text(
+                "Mendapatkan data...",
+                style: kTextStyle.copyWith(fontSize: 16, color: kPrimaryColor),
+              ));
             } else if (snapshot.hasError) {
               UiUtils.setSnackbar(context,
                   text: "Ada kesalahan saat proses data");
