@@ -1,21 +1,23 @@
-import 'package:absensi_mattaher/model/absensi_model.dart';
-import 'package:absensi_mattaher/model/user_profile.dart';
-import 'package:absensi_mattaher/repositories/absensi_repositories.dart';
-import 'package:absensi_mattaher/repositories/user_repositories.dart';
-import 'package:absensi_mattaher/ui/screens/user/absensi/absensi_screen.dart';
-import 'package:absensi_mattaher/ui/screens/user/home/pulang_screen.dart';
-import 'package:absensi_mattaher/ui/screens/user/jadwal/jadwal_screen.dart';
-import 'package:absensi_mattaher/utils/ui_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../../model/absensi_model.dart';
+import '../../../../model/user_profile.dart';
+import '../../../../repositories/absensi_repositories.dart';
+import '../../../../repositories/user_repositories.dart';
 import '../../../../utils/constants/constants.dart';
+import '../../../../utils/ui_utils.dart';
 import '../../../styles/colors.dart';
+import '../absensi/absensi_screen.dart';
+import '../jadwal/jadwal_screen.dart';
+
+// Import yang diperlukan
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -25,18 +27,20 @@ class _HomeScreenState extends State<HomeScreen> {
   final UserRepositories _userRepositories = UserRepositories();
   final AbsensiRepositories _absensiRepositories = AbsensiRepositories();
   Future<UserProfile>? _userProfile;
-  Future<AbsensiModel>? _absensi;
-  String? _curentDateTime;
+  String? _currentDateTime;
+  AbsensiModel? _absensiModel;
+
+  int? idAbsen;
   String _jamMasuk = "--:--";
   String _waktuPulang = "--:--";
+  Position? _currentPosition;
 
   @override
   void initState() {
     super.initState();
     _userProfile = _userRepositories.userProfileInfo();
-    _absensi = _absensiRepositories.getLastAbsensi();
     getCurrentDate();
-    getHourAbsesi();
+    getHourAbsensi();
   }
 
   void getCurrentDate() {
@@ -44,28 +48,68 @@ class _HomeScreenState extends State<HomeScreen> {
     String formatDate =
         "${now.day.toString().padLeft(2, "0")}-${now.month.toString().padLeft(2, "0")}-${now.year}";
     setState(() {
-      _curentDateTime = formatDate;
+      _currentDateTime = formatDate;
+      print(_currentDateTime);
+      // print(_absensiModel!.fotoMasuk.toString());
     });
   }
 
-  void getHourAbsesi() {
-    _absensi!.then(
-      (absensi) {
-        DateTime waktuMasuk =
-            DateTime.parse(absensi.absensi[0].tanggalAbsensi.toString());
-        DateFormat format = DateFormat('dd-MM-yyyy');
-        String formatedDate = format.format(waktuMasuk); //result : 04-03-2024
-        // print("absensi function ${formatedDate}");
+  void getHourAbsensi() async {
+    final absensiModel = await _absensiRepositories.getLastAbsensi();
+    setState(() {
+      _absensiModel = absensiModel;
+    });
 
-        // pengecekan apakah ada tanggal absensi yang sama saat ini dengan tanggal sistem
-        if (formatedDate == _curentDateTime) {
-          setState(() {
-            _jamMasuk = absensi.absensi[0].waktuMasuk.toString();
-            _waktuPulang = absensi.absensi[0].waktuPulang.toString();
-          });
-        }
-      },
+    // print("object1 : ${_absensiModel!.tanggalAbsensi.toString()}");
+    // print("object2 ${_absensiModel!.fotoMasuk.toString()}");
+
+    DateTime waktuMasuk = DateTime.parse(_absensiModel!.tanggalAbsensi);
+
+    // Mengubah zona waktu dari UTC menjadi UTC+7
+    waktuMasuk = waktuMasuk.add(Duration(hours: 7));
+    print("waktuMasuk : $waktuMasuk");
+
+    // Format tanggal sesuai dengan zona waktu UTC+7
+    DateFormat format = DateFormat('dd-MM-yyyy');
+    String formattedDate = format.format(waktuMasuk);
+    // print("formated date $formattedDate");
+    // print("_currentDateTime ${_currentDateTime}");
+
+    if (formattedDate == _currentDateTime) {
+      setState(() {
+        _jamMasuk = _absensiModel!.waktuMasuk.toString();
+        _waktuPulang = _absensiModel!.waktuPulang.toString();
+      });
+    }
+  }
+
+  Future<void> _getCurrentPosition() async {
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
+      setState(() => _currentPosition = position);
+      // _getAddressFromLatLng(_currentPosition!);
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+  bool _isLocationInRange() {
+    // -1.602936418177061, 103.58022258385294
+    const double rsudLatitude = kRsudLatitude;
+    const double rsudLongitude = kRsudLongitude;
+    // Ganti dengan range yang diizinkan dalam meter
+    const double rangeInMeters = krangeInMeters;
+
+    // Hitung jarak antara posisi saat ini dengan posisi rsud
+    double distanceInMeters = Geolocator.distanceBetween(
+      _currentPosition!.latitude,
+      _currentPosition!.longitude,
+      rsudLatitude,
+      rsudLongitude,
     );
+
+    // Cek apakah posisi saat ini berada dalam range yang diizinkan
+    return distanceInMeters <= rangeInMeters;
   }
 
   @override
@@ -252,8 +296,35 @@ class _HomeScreenState extends State<HomeScreen> {
                                       child: const Text("Tidak"),
                                     ),
                                     ElevatedButton(
-                                      onPressed: () {
-                                        _absensiRepositories.updateAbsensi()
+                                      onPressed: () async {
+                                        await _getCurrentPosition();
+                                        bool isRange = _isLocationInRange();
+
+                                        if (isRange) {
+                                          print(_currentPosition!.latitude);
+                                          await _absensiRepositories
+                                              .updateAbsensi(
+                                            idAbsen: _absensiModel!.idAbsensi,
+                                            latPulang: _currentPosition!
+                                                .latitude
+                                                .toString(),
+                                            longPulang: _currentPosition!
+                                                .longitude
+                                                .toString(),
+                                          );
+                                          if (mounted) {
+                                            UiUtils.setSnackbar(context,
+                                                text: "Anda berhasil pulang");
+                                            Navigator.pop(context);
+                                          }
+                                        } else {
+                                          // Tampilkan pesan karena pengguna berada di luar range lokasi yang diizinkan
+                                          UiUtils.setSnackbar(
+                                            context,
+                                            text:
+                                                "Anda berada di luar area lokasi yang diizinkan.",
+                                          );
+                                        }
                                       },
                                       child: const Text("Ya"),
                                     ),
@@ -299,10 +370,12 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if (!snapshot.hasData) {
               return Center(
-                  child: Text(
-                "Mendapatkan data...",
-                style: kTextStyle.copyWith(fontSize: 16, color: kPrimaryColor),
-              ));
+                child: Text(
+                  "Mendapatkan data...",
+                  style:
+                      kTextStyle.copyWith(fontSize: 16, color: kPrimaryColor),
+                ),
+              );
             } else if (snapshot.hasError) {
               UiUtils.setSnackbar(context,
                   text: "Ada kesalahan saat proses data");
@@ -339,7 +412,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 Text(
-                  'Selamat datang, Jangan lupa absen hari ini \n $_curentDateTime',
+                  'Selamat datang, Jangan lupa absen hari ini \n $_currentDateTime',
                   textAlign: TextAlign.center,
                   style: kTextStyle.copyWith(
                     fontSize: 16,

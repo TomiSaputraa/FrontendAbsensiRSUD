@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:absensi_mattaher/model/absensi_model.dart';
@@ -90,23 +89,31 @@ class AbsensiRepositories {
       // print("response absensi : ${response.data}");
 
       if (response.statusCode == 200) {
+        // print(response.data);
         return AbsensiModel.fromJson(response.data);
-      } else if (response.statusCode == 401) {
-        throw Exception("Sesi login telah berakhir");
       } else {
-        throw Exception("Gagal mendapatkan data absensi");
+        throw Exception('Failed to load absensi data');
       }
     } on DioException catch (e) {
       throw Exception(e);
     }
   }
 
-  Future updateAbsensi({int? idAbsen, String? kodeShift}) async {
+  Future updateAbsensi({
+    int? idAbsen,
+    String? kodeShift,
+    String? waktuPulang,
+    String? latPulang,
+    String? longPulang,
+  }) async {
     String? token = await DataBase().storageGetString('token');
     Uri url = Uri.parse(absensiUrl + idAbsen.toString());
 
     Map<String, dynamic> data = <String, dynamic>{
       "kode_shift": kodeShift,
+      "waktu_pulang": waktuPulang,
+      "latitude_pulang": latPulang,
+      "longitude_pulang": longPulang,
     };
 
     var response = await dio.put(

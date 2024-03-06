@@ -57,4 +57,9 @@ class DataBase {
     SharedPreferences preferences = await _prefs;
     await preferences.remove(key);
   }
+
+  Future<void> prefRemovesAllToken() async {
+    SharedPreferences preferences = await _prefs;
+    await preferences.clear();
+  }
 }

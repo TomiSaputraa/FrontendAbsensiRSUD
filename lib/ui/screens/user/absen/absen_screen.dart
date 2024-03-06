@@ -196,7 +196,7 @@ class _AbsenPageState extends State<AbsenPage> {
                     DataBase().prefRemoveToken("latitude");
                     DataBase().prefRemoveToken("longtitude");
                     UiUtils.setSnackbar(context,
-                        text: "Absen baru berhasil dibaur");
+                        text: "Absen baru berhasil dibuat");
                     Navigator.pop(context);
                   }
                 } catch (e) {

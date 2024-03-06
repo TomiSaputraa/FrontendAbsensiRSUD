@@ -46,7 +46,7 @@ class _JadwalScreenState extends State<JadwalScreen> {
   @override
   void initState() {
     super.initState();
-    _absensi = _absensiRepositories.getLastAbsensi();
+    _absensi = _absensiRepositories.getLastAbsensi() as Future<AbsensiModel>?;
     getCurrentDate();
     getHourAbsesi();
   }
@@ -63,8 +63,7 @@ class _JadwalScreenState extends State<JadwalScreen> {
   void getHourAbsesi() {
     _absensi!.then(
       (absensi) {
-        DateTime waktuMasuk =
-            DateTime.parse(absensi.absensi[0].tanggalAbsensi.toString());
+        DateTime waktuMasuk = DateTime.parse(absensi.tanggalAbsensi.toString());
         DateFormat format = DateFormat('dd-MM-yyyy');
         String formatedDate = format.format(waktuMasuk); //result : 04-03-2024
         // print("absensi function ${formatedDate}");
@@ -72,11 +71,11 @@ class _JadwalScreenState extends State<JadwalScreen> {
         // pengecekan apakah ada tanggal absensi yang sama saat ini dengan tanggal sistem
         if (formatedDate == _curentDateTime) {
           setState(() {
-            idAbsensi = absensi.absensi[0].idAbsensi!.toInt();
-            kodeShift = absensi.absensi[0].kodeShift.toString();
-            _jamMasuk = absensi.absensi[0].waktuMasuk.toString();
-            _waktuPulang = absensi.absensi[0].waktuPulang.toString();
-            tanggalAbsen = absensi.absensi[0].tanggalAbsensi.toString();
+            idAbsensi = absensi.idAbsensi!.toInt();
+            kodeShift = absensi.kodeShift.toString();
+            _jamMasuk = absensi.waktuMasuk.toString();
+            _waktuPulang = absensi.waktuPulang.toString();
+            tanggalAbsen = absensi.tanggalAbsensi.toString();
           });
         }
       },

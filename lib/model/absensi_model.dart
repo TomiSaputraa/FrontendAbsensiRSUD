@@ -1,26 +1,23 @@
+import 'package:meta/meta.dart';
+import 'dart:convert';
+
 class AbsensiModel {
+  int idAbsensi;
+  String idUser;
+  String kodeShift;
+  String tanggalAbsensi;
+  String waktuMasuk;
+  String waktuPulang;
+  String telatMasuk;
+  String? telatPulang;
+  String latitudeMasuk;
+  String? longitudeMasuk;
+  String? latitudePulang;
+  dynamic longitudePulang;
+  String fotoMasuk;
+  String statusHadir;
+
   AbsensiModel({
-    required this.absensi,
-  });
-
-  final List<Absensi> absensi;
-
-  factory AbsensiModel.fromJson(Map<String, dynamic> json) {
-    return AbsensiModel(
-      absensi: json["Absensi"] == null
-          ? []
-          : List<Absensi>.from(
-              json["Absensi"]!.map((x) => Absensi.fromJson(x))),
-    );
-  }
-
-  Map<String, dynamic> toJson() => {
-        "Absensi": absensi.map((x) => x?.toJson()).toList(),
-      };
-}
-
-class Absensi {
-  Absensi({
     required this.idAbsensi,
     required this.idUser,
     required this.kodeShift,
@@ -37,45 +34,33 @@ class Absensi {
     required this.statusHadir,
   });
 
-  final int? idAbsensi;
-  final String? idUser;
-  final String? kodeShift;
-  final DateTime? tanggalAbsensi;
-  final String? waktuMasuk;
-  final String? waktuPulang;
-  final String? telatMasuk;
-  final String? telatPulang;
-  final String? latitudeMasuk;
-  final String? longitudeMasuk;
-  final String? latitudePulang;
-  final dynamic longitudePulang;
-  final String? fotoMasuk;
-  final String? statusHadir;
+  factory AbsensiModel.fromRawJson(String str) =>
+      AbsensiModel.fromJson(json.decode(str));
 
-  factory Absensi.fromJson(Map<String, dynamic> json) {
-    return Absensi(
-      idAbsensi: json["id_absensi"],
-      idUser: json["id_user"],
-      kodeShift: json["kode_shift"],
-      tanggalAbsensi: DateTime.tryParse(json["tanggal_absensi"] ?? ""),
-      waktuMasuk: json["waktu_masuk"],
-      waktuPulang: json["waktu_pulang"],
-      telatMasuk: json["telat_masuk"],
-      telatPulang: json["telat_pulang"],
-      latitudeMasuk: json["latitude_masuk"],
-      longitudeMasuk: json["longitude_masuk"],
-      latitudePulang: json["latitude_pulang"],
-      longitudePulang: json["longitude_pulang"],
-      fotoMasuk: json["foto_masuk"],
-      statusHadir: json["status_hadir"],
-    );
-  }
+  String toRawJson() => json.encode(toJson());
+
+  factory AbsensiModel.fromJson(Map<String, dynamic> json) => AbsensiModel(
+        idAbsensi: json["id_absensi"],
+        idUser: json["id_user"],
+        kodeShift: json["kode_shift"],
+        tanggalAbsensi: json["tanggal_absensi"],
+        waktuMasuk: json["waktu_masuk"],
+        waktuPulang: json["waktu_pulang"],
+        telatMasuk: json["telat_masuk"],
+        telatPulang: json["telat_pulang"],
+        latitudeMasuk: json["latitude_masuk"],
+        longitudeMasuk: json["longitude_masuk"],
+        latitudePulang: json["latitude_pulang"],
+        longitudePulang: json["longitude_pulang"],
+        fotoMasuk: json["foto_masuk"],
+        statusHadir: json["status_hadir"],
+      );
 
   Map<String, dynamic> toJson() => {
         "id_absensi": idAbsensi,
         "id_user": idUser,
         "kode_shift": kodeShift,
-        "tanggal_absensi": tanggalAbsensi?.toIso8601String(),
+        "tanggal_absensi": tanggalAbsensi,
         "waktu_masuk": waktuMasuk,
         "waktu_pulang": waktuPulang,
         "telat_masuk": telatMasuk,
