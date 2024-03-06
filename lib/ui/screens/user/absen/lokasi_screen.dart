@@ -58,6 +58,25 @@ class _LokasiScreenState extends State<LokasiScreen> {
     });
   }
 
+  bool _isLocationInRange() {
+    // -1.602936418177061, 103.58022258385294
+    const double rsudLatitude = kRsudLatitude;
+    const double rsudLongitude = kRsudLongitude;
+    // Ganti dengan range yang diizinkan dalam meter
+    const double rangeInMeters = krangeInMeters;
+
+    // Hitung jarak antara posisi saat ini dengan posisi rsud
+    double distanceInMeters = Geolocator.distanceBetween(
+      _currentPosition!.latitude,
+      _currentPosition!.longitude,
+      rsudLatitude,
+      rsudLongitude,
+    );
+
+    // Cek apakah posisi saat ini berada dalam range yang diizinkan
+    return distanceInMeters <= rangeInMeters;
+  }
+
   // Future<void> _getAddressFromLatLng(Position position) async {
   //   await placemarkFromCoordinates(
   //           _currentPosition!.latitude, _currentPosition!.longitude)
@@ -147,7 +166,7 @@ class _LokasiScreenState extends State<LokasiScreen> {
               print('long $long');
 
               DataBase().prefSetString(lat!, 'latitude');
-              DataBase().prefSetString(long!, 'longtitude');
+              DataBase().prefSetString(long!, 'longitude');
             },
             style: ButtonStyle(
               backgroundColor: MaterialStatePropertyAll(
@@ -165,13 +184,25 @@ class _LokasiScreenState extends State<LokasiScreen> {
             ),
           ),
           wKonfirmasiButton(function: () async {
-            var getDatabaselat = await DataBase().prefGetString('latitude');
-            var getDatabaselong = await DataBase().prefGetString('longtitude');
+            // Cek apakah posisi saat ini berada dalam range yang diizinkan
+            bool isInRange = _isLocationInRange();
 
-            print('latitude: $getDatabaselat');
-            print('longtitude: $getDatabaselong');
+            if (isInRange) {
+              var getDatabaseLat = await DataBase().prefGetString('latitude');
+              var getDatabaseLong = await DataBase().prefGetString('longitude');
+              DataBase().prefSetBool("isLokasi", true);
 
-            Navigator.pop(context);
+              print('latitude: $getDatabaseLat');
+              print('longitude: $getDatabaseLong');
+
+              if (mounted) {
+                Navigator.pop(context);
+              }
+            } else {
+              // Tampilkan pesan karena pengguna berada di luar range lokasi yang diizinkan
+              UiUtils.setSnackbar(context,
+                  text: "Anda berada di luar area lokasi yang diizinkan.");
+            }
           }),
         ],
       ),
