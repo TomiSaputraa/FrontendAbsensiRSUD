@@ -9,8 +9,8 @@ const kRsudLongitude = 103.58022258385294;
 const krangeInMeters = 100.0;
 
 // endpoint api
-const apiUrl = "https://fond-greatly-lion.ngrok-free.app/";
-// const apiUrl = "http://10.0.2.2:3000/";
+// const apiUrl = "https://fond-greatly-lion.ngrok-free.app/";
+const apiUrl = "http://192.168.43.77:3000/";
 
 // user
 const userApiUrl = '${apiUrl}api/users/';
