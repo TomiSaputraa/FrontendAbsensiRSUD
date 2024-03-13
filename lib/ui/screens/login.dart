@@ -145,9 +145,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   text: "Ada kesalahan saat login : ${e.response!.statusCode}");
               if (e.response != null) {
                 log('DioError response: ${e.response!.data}');
-                UiUtils.setSnackbar(context,
-                    text:
-                        "Ada kesalahan saat login : ${e.response!.statusCode}");
               } else {
                 log('DioError request: ${e.requestOptions}');
               }

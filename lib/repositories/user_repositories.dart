@@ -43,4 +43,28 @@ class UserRepositories {
       throw Exception('Failed to load user');
     }
   }
+
+  Future updateProfile({String? email, String? noHp, String? password}) async {
+    String? token = await DataBase().storageGetString('token');
+    String? idUser = await DataBase().storageGetString('id_user');
+    Uri url = Uri.parse(userApiUrl + idUser!);
+
+    Map<String, dynamic> data = <String, dynamic>{
+      "email": email,
+      "no_hp": noHp,
+      "password_hash": password
+    };
+
+    var response = await dio.patch(
+      url.toString(),
+      data: data,
+      options: Options(headers: {'Authorization': 'Bearer $token'}),
+    );
+
+    if (response.statusCode == 200) {
+      print("Update data user berhasil: ${response.data}");
+    } else {
+      print("update gagal: ${response.statusCode}");
+    }
+  }
 }

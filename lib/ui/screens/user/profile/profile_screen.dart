@@ -46,59 +46,79 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 16, top: 16, right: 16),
                 child: FutureBuilder(
-                    future: _userProfile,
-                    builder: (BuildContext context,
-                        AsyncSnapshot<dynamic> snapshot) {
-                      if (!snapshot.hasData) {
-                        return Center(
-                          child: Text(
-                            "Mendapatkan data...",
-                            style: kTextStyle.copyWith(
-                                fontSize: 16, color: kPrimaryColor),
+                  future: _userProfile,
+                  builder:
+                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: Text(
+                          "Mendapatkan data...",
+                          style: kTextStyle.copyWith(
+                              fontSize: 16, color: kPrimaryColor),
+                        ),
+                      );
+                    } else if (snapshot.hasError) {
+                      UiUtils.setSnackbar(context,
+                          text: "Ada kesalahan saat proses data");
+                    }
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                maxRadius: 40,
+                                backgroundImage: NetworkImage(apiUrl +
+                                    snapshot.data!.fotoProfil.toString()),
+                              ),
+                              const SizedBox(width: 16),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    snapshot.data!.namaLengkap.toString(),
+                                    style: kTextStyle.copyWith(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: kPrimaryColor),
+                                  ),
+                                  Text(
+                                    snapshot.data!.jabatan.toString(),
+                                    style: kTextStyle.copyWith(
+                                        fontSize: 14, color: kGreyColor),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                        );
-                      } else if (snapshot.hasError) {
-                        UiUtils.setSnackbar(context,
-                            text: "Ada kesalahan saat proses data");
-                      }
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: Row(
-                              children: [
-                                CircleAvatar(
-                                  maxRadius: 40,
-                                  backgroundImage: NetworkImage(apiUrl +
-                                      snapshot.data!.fotoProfil.toString()),
-                                ),
-                                const SizedBox(width: 16),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      snapshot.data!.namaLengkap.toString(),
-                                      style: kTextStyle.copyWith(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: kPrimaryColor),
-                                    ),
-                                    Text(
-                                      snapshot.data!.jabatan.toString(),
-                                      style: kTextStyle.copyWith(
-                                          fontSize: 14, color: kGreyColor),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                        ),
+                        Row(
+                          children: [
+                            SvgPicture.asset(
+                              UiUtils.getImagesPath(
+                                  "profil/211604_email_icon.svg"),
+                              width: 25,
+                              height: 25,
+                              colorFilter: const ColorFilter.mode(
+                                  kGreyColor, BlendMode.srcIn),
                             ),
-                          ),
-                          Row(
+                            const SizedBox(width: 10),
+                            Text(
+                              snapshot.data!.email.toString(),
+                              style: kTextStyle.copyWith(
+                                  fontSize: 14, color: kGreyColor),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Row(
                             children: [
                               SvgPicture.asset(
                                 UiUtils.getImagesPath(
-                                    "profil/211604_email_icon.svg"),
+                                    "profil/211829_telephone_icon.svg"),
                                 width: 25,
                                 height: 25,
                                 colorFilter: const ColorFilter.mode(
@@ -106,136 +126,123 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               const SizedBox(width: 10),
                               Text(
-                                snapshot.data!.email.toString(),
+                                snapshot.data!.noHp.toString(),
                                 style: kTextStyle.copyWith(
                                     fontSize: 14, color: kGreyColor),
                               ),
                             ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        ),
+                        const Divider(),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                UiUtils.getImagesPath("profil/update_icon.svg"),
+                                width: 27,
+                                height: 27,
+                                colorFilter: const ColorFilter.mode(
+                                    kPrimaryColor, BlendMode.srcIn),
+                              ),
+                              const SizedBox(width: 10),
+                              GestureDetector(
+                                onTap: () {
+                                  const UpdateProfilScreen().launch(context);
+                                },
+                                child: Text(
+                                  "Update Profil",
+                                  style: kTextStyle.copyWith(
+                                      color: kPrimaryColor, fontSize: 15),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                UiUtils.getImagesPath(
+                                    "profil/352426_history_icon.svg"),
+                                width: 27,
+                                height: 27,
+                                colorFilter: const ColorFilter.mode(
+                                    kPrimaryColor, BlendMode.srcIn),
+                              ),
+                              const SizedBox(width: 10),
+                              GestureDetector(
+                                onTap: () {
+                                  const HistoryScreen().launch(context);
+                                },
+                                child: Text("Riwayat absensi",
+                                    style: kTextStyle.copyWith(
+                                        color: kPrimaryColor, fontSize: 15)),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text(
+                                      "Apakah anda yakin ingin keluar?",
+                                      style: kTextStyle.copyWith(fontSize: 15),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    actions: [
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text("Tidak"),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () async {
+                                          // Hapus semua token yang tersimpan
+                                          await DataBase()
+                                              .prefRemovesAllToken();
+                                          await DataBase().storageDeleteAll();
+                                          if (mounted) {
+                                            const LoginScreen().launch(context);
+                                          }
+                                        },
+                                        child: const Text("Ya"),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
                             child: Row(
                               children: [
                                 SvgPicture.asset(
                                   UiUtils.getImagesPath(
-                                      "profil/211829_telephone_icon.svg"),
-                                  width: 25,
-                                  height: 25,
+                                      "profil/2639921_shutdown_icon.svg"),
+                                  width: 27,
+                                  height: 27,
                                   colorFilter: const ColorFilter.mode(
-                                      kGreyColor, BlendMode.srcIn),
+                                      kRedColor, BlendMode.srcIn),
                                 ),
                                 const SizedBox(width: 10),
                                 Text(
-                                  snapshot.data!.noHp.toString(),
+                                  "Keluar",
                                   style: kTextStyle.copyWith(
-                                      fontSize: 14, color: kGreyColor),
+                                      color: kRedColor, fontSize: 15),
                                 ),
                               ],
                             ),
                           ),
-                          const Divider(),
-                          // Padding(
-                          //   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          //   child: Row(
-                          //     children: [
-                          //       SvgPicture.asset(
-                          //         UiUtils.getImagesPath("profil/update_icon.svg"),
-                          //         width: 27,
-                          //         height: 27,
-                          //         colorFilter: const ColorFilter.mode(
-                          //             kPrimaryColor, BlendMode.srcIn),
-                          //       ),
-                          //       const SizedBox(width: 10),
-                          //       GestureDetector(
-                          //         onTap: () {
-                          //           const UpdateProfilScreen().launch(context);
-                          //         },
-                          //         child: Text(
-                          //           "Update Profil",
-                          //           style: kTextStyle.copyWith(
-                          //               color: kPrimaryColor, fontSize: 15),
-                          //         ),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
-                          // Padding(
-                          //   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          //   child: Row(
-                          //     children: [
-                          //       SvgPicture.asset(
-                          //         UiUtils.getImagesPath("profil/352426_history_icon.svg"),
-                          //         width: 27,
-                          //         height: 27,
-                          //         colorFilter: const ColorFilter.mode(
-                          //             kPrimaryColor, BlendMode.srcIn),
-                          //       ),
-                          //       const SizedBox(width: 10),
-                          //       GestureDetector(
-                          //         onTap: () {
-                          //           const HistoryScreen().launch(context);
-                          //         },
-                          //         child: Text("Riwayat absensi",
-                          //             style: kTextStyle.copyWith(
-                          //                 color: kPrimaryColor, fontSize: 15)),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
-                        ],
-                      );
-                    }),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: GestureDetector(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: Text(
-                            "Apakah anda yakin ingin keluar?",
-                            style: kTextStyle.copyWith(fontSize: 15),
-                            textAlign: TextAlign.center,
-                          ),
-                          actions: [
-                            ElevatedButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text("Tidak"),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                // Hapus semua token yang tersimpan
-                                DataBase().prefRemovesAllToken();
-                                const LoginScreen().launch(context);
-                              },
-                              child: const Text("Ya"),
-                            ),
-                          ],
-                        );
-                      },
+                        ),
+                      ],
                     );
-                    // DataBase().prefRemovesAllToken();
                   },
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        UiUtils.getImagesPath(
-                            "profil/2639921_shutdown_icon.svg"),
-                        width: 27,
-                        height: 27,
-                        colorFilter:
-                            const ColorFilter.mode(kRedColor, BlendMode.srcIn),
-                      ),
-                      const SizedBox(width: 10),
-                      Text("Keluar",
-                          style: kTextStyle.copyWith(
-                              color: kRedColor, fontSize: 15)),
-                    ],
-                  ),
                 ),
               ),
             ],

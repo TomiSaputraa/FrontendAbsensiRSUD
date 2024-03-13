@@ -12,9 +12,7 @@ import '../../../../utils/constants/constants.dart';
 import '../../../../utils/ui_utils.dart';
 import '../../../styles/colors.dart';
 import '../absensi/absensi_screen.dart';
-import '../jadwal/jadwal_screen.dart';
-
-// Import yang diperlukan
+import 'jadwal_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -50,30 +48,23 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _currentDateTime = formatDate;
       print(_currentDateTime);
-      // print(_absensiModel!.fotoMasuk.toString());
     });
   }
 
   void getHourAbsensi() async {
-    final absensiModel = await _absensiRepositories.getLastAbsensi();
+    final absensiModel = await _absensiRepositories!.getLastAbsensi();
     setState(() {
       _absensiModel = absensiModel;
     });
-
-    // print("object1 : ${_absensiModel!.tanggalAbsensi.toString()}");
-    // print("object2 ${_absensiModel!.fotoMasuk.toString()}");
 
     DateTime waktuMasuk = DateTime.parse(_absensiModel!.tanggalAbsensi);
 
     // Mengubah zona waktu dari UTC menjadi UTC+7
     waktuMasuk = waktuMasuk.add(Duration(hours: 7));
-    print("waktuMasuk : $waktuMasuk");
 
     // Format tanggal sesuai dengan zona waktu UTC+7
     DateFormat format = DateFormat('dd-MM-yyyy');
     String formattedDate = format.format(waktuMasuk);
-    // print("formated date $formattedDate");
-    // print("_currentDateTime ${_currentDateTime}");
 
     if (formattedDate == _currentDateTime) {
       setState(() {
@@ -318,7 +309,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                             Navigator.pop(context);
                                           }
                                         } else {
-                                          // Tampilkan pesan karena pengguna berada di luar range lokasi yang diizinkan
                                           UiUtils.setSnackbar(
                                             context,
                                             text:
