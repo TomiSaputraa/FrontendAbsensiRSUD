@@ -16,7 +16,7 @@ const apiUrl = "http://192.168.43.77:3000/";
 const userApiUrl = '${apiUrl}api/users/';
 const loginUrl = '${userApiUrl}login';
 
-// absensi
+// absens234
 const absensiUrl = '${apiUrl}api/absensi/';
 const createAbsensiUrl = '${absensiUrl}create';
 const checkLastAbsensi = "${absensiUrl}checkAbsesiToday";

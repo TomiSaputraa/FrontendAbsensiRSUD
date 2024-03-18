@@ -21,8 +21,8 @@ class UserProfile {
   final String? ruangan;
   final String? grup;
   final String? jenisKelamin;
-  final String? email;
-  final String? noHp;
+  final String email;
+  final String noHp;
   final String? fotoProfil;
   final DateTime? bergabungSejak;
   final String? role;

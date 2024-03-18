@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-import '../../../../model/user_profile.dart';
+import '../../../../model/user_model.dart';
 import '../../../../repositories/user_repositories.dart';
 
 class ProfileScreen extends StatefulWidget {

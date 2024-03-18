@@ -1,4 +1,4 @@
-import 'package:absensi_mattaher/model/user_profile.dart';
+import 'package:absensi_mattaher/model/user_model.dart';
 import 'package:absensi_mattaher/utils/constants/constants.dart';
 import 'package:absensi_mattaher/services/database_services.dart';
 import 'package:dio/dio.dart';
@@ -26,21 +26,26 @@ class UserRepositories {
   }
 
   Future<UserProfile> userProfileInfo() async {
-    String? token = await DataBase().storageGetString('token');
-    String? idUser = await DataBase().storageGetString('id_user');
-    Uri url = Uri.parse(userApiUrl + idUser!);
+    try {
+      String? token = await DataBase().storageGetString('token');
+      String? idUser = await DataBase().storageGetString('id_user');
+      Uri url = Uri.parse(userApiUrl + idUser!);
 
-    var response = await dio.get(url.toString(),
-        options: Options(headers: {'Authorization': 'Bearer $token'}));
+      var response = await dio.get(url.toString(),
+          options: Options(headers: {'Authorization': 'Bearer $token'}));
 
-    // print('response data : ${response.data}');
+      // print('response data : ${response.data}');
 
-    if (response.statusCode == 200) {
-      // print(response.data);
-      return UserProfile.fromJson(response.data);
-    } else {
-      print('Ada kesalahan saat mendapatkan informasi user');
-      throw Exception('Failed to load user');
+      if (response.statusCode == 200) {
+        // print(response.data);
+        return UserProfile.fromJson(response.data);
+      } else {
+        print('Ada kesalahan saat mendapatkan informasi user');
+        print(response.statusCode);
+        throw Exception('Failed to load user');
+      }
+    } on DioException catch (e) {
+      throw Exception(e.response!.statusCode);
     }
   }
 

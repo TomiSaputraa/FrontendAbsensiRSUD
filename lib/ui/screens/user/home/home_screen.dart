@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../../../model/absensi_model.dart';
-import '../../../../model/user_profile.dart';
+import '../../../../model/user_model.dart';
 import '../../../../repositories/absensi_repositories.dart';
 import '../../../../repositories/user_repositories.dart';
 import '../../../../utils/constants/constants.dart';
