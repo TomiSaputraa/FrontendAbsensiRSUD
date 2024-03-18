@@ -42,13 +42,12 @@ class _SplashScreenState extends State<SplashScreen> {
         // Navigasi ke halaman home jika pemanggilan berhasil
         const Home().launch(context, isNewTask: true);
       }).catchError((error) {
-        // Tangani kesalahan lainnya jika terjadi
+        // Navigasi ke halaman login jika terjadi kesalahan
         print("Error: $error");
         UiUtils.setSnackbar(
           context,
-          text: "Ada kesalahan coba login lagi",
+          text: "Ada kesalahan coba login ulang",
         );
-        // Navigasi ke halaman login jika terjadi kesalahan
         const LoginScreen().launch(context, isNewTask: true);
       });
     }
