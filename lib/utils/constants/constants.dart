@@ -16,7 +16,7 @@ const apiUrl = "http://192.168.43.77:3000/";
 const userApiUrl = '${apiUrl}api/users/';
 const loginUrl = '${userApiUrl}login';
 
-// absens234
+// absen
 const absensiUrl = '${apiUrl}api/absensi/';
 const createAbsensiUrl = '${absensiUrl}create';
 const checkLastAbsensi = "${absensiUrl}checkAbsesiToday";
@@ -32,3 +32,6 @@ const createCutiUrl = '${cutiUrl}create';
 // Sakit
 const sakitUrl = '${apiUrl}api/sakit/';
 const createSakitUrl = '${sakitUrl}create';
+
+// Remote config
+const remoteUrl = '${apiUrl}api/admin/config';

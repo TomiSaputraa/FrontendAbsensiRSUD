@@ -210,7 +210,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               .prefRemovesAllToken();
                                           await DataBase().storageDeleteAll();
                                           if (mounted) {
-                                            const LoginScreen().launch(context);
+                                            const LoginScreen().launch(context,
+                                                isNewTask: true);
                                           }
                                         },
                                         child: const Text("Ya"),

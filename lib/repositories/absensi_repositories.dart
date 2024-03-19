@@ -58,22 +58,27 @@ class AbsensiRepositories {
         ),
       );
 
+      // simpan waktu masuk kedalam token
+      var waktuMasuk = response.data['result']['waktu_masuk'];
+      DataBase().prefSetString(waktuMasuk, "waktu_masuk");
+      print("waktuMasuk $waktuMasuk");
+
       if (response.statusCode == 201) {
         print("Absensi berhasil: ${response.data}");
       } else {
         print("Absensi gagal: ${response.statusCode}");
       }
     } on DioException catch (e) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx and is also not 304.
       if (e.response != null) {
         print(e.response!.data);
         print(e.response!.headers);
         print(e.response!.requestOptions);
+        throw Exception(e.response!.statusCode);
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         print(e.requestOptions);
         print(e.message);
+        throw Exception(e.response!.statusCode);
       }
     }
   }

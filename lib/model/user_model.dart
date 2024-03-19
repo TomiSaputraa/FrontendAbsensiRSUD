@@ -16,7 +16,7 @@ class UserProfile {
 
   final String? idUser;
   final String? passwordHash;
-  final String? namaLengkap;
+  final String namaLengkap;
   final String? jabatan;
   final String? ruangan;
   final String? grup;

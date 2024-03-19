@@ -19,6 +19,7 @@ class _UpdateProfilScreenState extends State<UpdateProfilScreen> {
   final UserRepositories _userRepositories = UserRepositories();
   Future<UserProfile>? _userProfile;
 
+  final TextEditingController _namaController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _noHpController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -71,11 +72,10 @@ class _UpdateProfilScreenState extends State<UpdateProfilScreen> {
                       child: Column(
                         children: [
                           TextFormField(
-                              readOnly: true,
-                              decoration: InputDecoration(
-                                  filled: true,
-                                  hintMaxLines: 100,
-                                  hintText: snapshot.data!.namaLengkap)),
+                              controller: _namaController
+                                ..text = snapshot.data!.namaLengkap,
+                              decoration: const InputDecoration(
+                                  hintMaxLines: 100, hintText: "Nama lengkap")),
                           TextFormField(
                             controller: _emailController
                               ..text = snapshot.data!
@@ -126,6 +126,7 @@ class _UpdateProfilScreenState extends State<UpdateProfilScreen> {
                               } else if (_passwordController.text ==
                                   _passwordConfirmController.text) {
                                 await _userRepositories.updateProfile(
+                                  namaLengkap: _namaController.text,
                                   email: _emailController.text,
                                   noHp: _noHpController.text,
                                   password: _passwordController.text,

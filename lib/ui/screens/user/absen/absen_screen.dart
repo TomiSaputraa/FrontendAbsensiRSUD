@@ -9,6 +9,7 @@ import 'package:absensi_mattaher/utils/ui_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../../../utils/constants/constants.dart';
@@ -42,6 +43,25 @@ class _AbsenPageState extends State<AbsenPage> {
   String imagePath = 'No image path';
   XFile? pickedImage;
   String dropdownValue = list.first;
+
+  // Tambahkan variabel untuk menyimpan waktu saat ini
+  late DateTime currentTime;
+
+  // Buat metode untuk memperbarui waktu saat ini
+  void updateCurrentTime() {
+    setState(() {
+      currentTime = DateTime.now();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    updateCurrentTime();
+    Future.delayed(const Duration(minutes: 1), () {
+      updateCurrentTime();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -184,6 +204,27 @@ class _AbsenPageState extends State<AbsenPage> {
 
                   var lat = await DataBase().prefGetString('latitude');
                   var long = await DataBase().prefGetString('longitude');
+                  var waktuMasuk =
+                      await DataBase().prefGetString("waktu_masuk");
+                  String waktuCum = "14:28";
+
+                  // Ubah string waktu masuk menjadi DateTime object
+                  // print("waktuMasukShift $waktuMasuk");
+                  // DateTime waktuMasukShift = DateFormat.Hm().parse(waktuCum);
+                  // print(waktuMasukShift);
+
+                  // // Hitung selisih waktu antara waktu saat ini dan waktu masuk shift
+                  // Duration difference = currentTime.difference(waktuMasukShift);
+                  // print(difference.inMinutes);
+                  // // Lakukan pengecekan apakah selisih waktu lebih dari 15 menit
+                  // bool isTerlambat = difference.inMinutes > 15;
+
+                  // Jika terlambat lebih dari 15 menit, tampilkan pesan dan kembalikan
+                  // if (isTerlambat) {
+                  //   UiUtils.setSnackbar(context,
+                  //       text: "Maaf, Anda terlambat lebih dari 15 menit.");
+                  //   return;
+                  // }
 
                   await AbsensiRepositories().createAbsensi(
                     kodeShift: dropdownValue,
@@ -195,19 +236,18 @@ class _AbsenPageState extends State<AbsenPage> {
                   if (mounted) {
                     DataBase().prefRemoveToken("latitude");
                     DataBase().prefRemoveToken("longtitude");
+                    DataBase().prefRemoveToken("waktu_masuk");
                     UiUtils.setSnackbar(context,
                         text: "Absen baru berhasil dibuat");
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
                   }
-                } catch (e) {
-                  if (e is DioException) {
-                    if (e.response != null) {
-                      debugPrint('DioError response: ${e.response}');
-                      UiUtils.setSnackbar(context,
-                          text: e.response!.statusCode.toString());
-                    } else {
-                      debugPrint('DioError request: ${e.requestOptions}');
-                    }
+                } on DioException catch (e) {
+                  if (e.response != null) {
+                    debugPrint('DioError response: ${e.response}');
+                    UiUtils.setSnackbar(context,
+                        text: e.response!.statusCode.toString());
+                  } else {
+                    debugPrint('DioError request: ${e.requestOptions}');
                   }
                 }
               },

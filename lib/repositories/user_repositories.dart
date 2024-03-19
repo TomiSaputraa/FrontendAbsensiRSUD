@@ -49,12 +49,17 @@ class UserRepositories {
     }
   }
 
-  Future updateProfile({String? email, String? noHp, String? password}) async {
+  Future updateProfile(
+      {String? namaLengkap,
+      String? email,
+      String? noHp,
+      String? password}) async {
     String? token = await DataBase().storageGetString('token');
     String? idUser = await DataBase().storageGetString('id_user');
     Uri url = Uri.parse(userApiUrl + idUser!);
 
     Map<String, dynamic> data = <String, dynamic>{
+      "nama_lengkap": namaLengkap,
       "email": email,
       "no_hp": noHp,
       "password_hash": password
