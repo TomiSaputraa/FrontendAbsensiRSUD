@@ -159,30 +159,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(
-                                UiUtils.getImagesPath(
-                                    "profil/352426_history_icon.svg"),
-                                width: 27,
-                                height: 27,
-                                colorFilter: const ColorFilter.mode(
-                                    kPrimaryColor, BlendMode.srcIn),
-                              ),
-                              const SizedBox(width: 10),
-                              GestureDetector(
-                                onTap: () {
-                                  const HistoryScreen().launch(context);
-                                },
-                                child: Text("Riwayat absensi",
-                                    style: kTextStyle.copyWith(
-                                        color: kPrimaryColor, fontSize: 15)),
-                              ),
-                            ],
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        //   child: Row(
+                        //     children: [
+                        //       SvgPicture.asset(
+                        //         UiUtils.getImagesPath(
+                        //             "profil/352426_history_icon.svg"),
+                        //         width: 27,
+                        //         height: 27,
+                        //         colorFilter: const ColorFilter.mode(
+                        //             kPrimaryColor, BlendMode.srcIn),
+                        //       ),
+                        //       const SizedBox(width: 10),
+                        //       GestureDetector(
+                        //         onTap: () {
+                        //           const HistoryScreen().launch(context);
+                        //         },
+                        //         child: Text("Riwayat absensi",
+                        //             style: kTextStyle.copyWith(
+                        //                 color: kPrimaryColor, fontSize: 15)),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: GestureDetector(
