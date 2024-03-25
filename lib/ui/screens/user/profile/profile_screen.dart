@@ -1,6 +1,5 @@
 import 'package:absensi_mattaher/services/database_services.dart';
 import 'package:absensi_mattaher/ui/screens/login.dart';
-import 'package:absensi_mattaher/ui/screens/user/profile/history_absensi_screen.dart';
 import 'package:absensi_mattaher/ui/screens/user/profile/update_profil_screen.dart';
 import 'package:absensi_mattaher/ui/styles/colors.dart';
 import 'package:absensi_mattaher/utils/constants/constants.dart';
@@ -201,7 +200,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         onPressed: () {
                                           Navigator.pop(context);
                                         },
-                                        child: Text("Tidak"),
+                                        child: const Text("Tidak"),
                                       ),
                                       ElevatedButton(
                                         onPressed: () async {

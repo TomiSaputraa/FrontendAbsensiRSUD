@@ -36,7 +36,7 @@ class IzinRepositories {
       if (response.statusCode == 201) {
         print("absensi berhasil : ${response.data}");
       } else {
-        print("Absensi gagal: ${response}");
+        print("Absensi gagal: $response");
       }
     } on DioException catch (e) {
       if (e.response != null) {

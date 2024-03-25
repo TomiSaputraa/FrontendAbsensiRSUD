@@ -1,6 +1,4 @@
-import 'package:absensi_mattaher/ui/screens/login.dart';
 import 'package:absensi_mattaher/ui/screens/splash_screen.dart';
-import 'package:absensi_mattaher/ui/screens/user/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,8 +12,7 @@ void main() async {
   await initialize();
 
   SharedPreferences.getInstance();
-  AndroidOptions _getAndroidOptions() =>
-      const AndroidOptions(encryptedSharedPreferences: true);
+  const AndroidOptions(encryptedSharedPreferences: true);
 
   runApp(const MyApp());
 }

@@ -7,7 +7,6 @@ import 'package:absensi_mattaher/utils/ui_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:nb_utils/nb_utils.dart';
 
 import '../../../styles/colors.dart';
 
@@ -46,7 +45,7 @@ class _JadwalScreenState extends State<JadwalScreen> {
   @override
   void initState() {
     super.initState();
-    _absensi = _absensiRepositories.getLastAbsensi() as Future<AbsensiModel>?;
+    _absensi = _absensiRepositories.getLastAbsensi();
     getCurrentDate();
     getHourAbsesi();
   }
@@ -71,7 +70,7 @@ class _JadwalScreenState extends State<JadwalScreen> {
         // pengecekan apakah ada tanggal absensi yang sama saat ini dengan tanggal sistem
         if (formatedDate == _curentDateTime) {
           setState(() {
-            idAbsensi = absensi.idAbsensi!.toInt();
+            idAbsensi = absensi.idAbsensi.toInt();
             kodeShift = absensi.kodeShift.toString();
             _jamMasuk = absensi.waktuMasuk.toString();
             _waktuPulang = absensi.waktuPulang.toString();

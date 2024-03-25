@@ -2,7 +2,6 @@ import 'package:absensi_mattaher/ui/widgets/appbar.dart';
 import 'package:absensi_mattaher/ui/widgets/konfirmasi_button.dart';
 import 'package:absensi_mattaher/utils/ui_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../../../../model/user_model.dart';
 import '../../../../repositories/user_repositories.dart';
@@ -27,7 +26,7 @@ class _UpdateProfilScreenState extends State<UpdateProfilScreen> {
       TextEditingController();
 
   String _previousEmail = '';
-  String _previousPhone = '';
+  final String _previousPhone = '';
 
   @override
   void initState() {
@@ -56,7 +55,7 @@ class _UpdateProfilScreenState extends State<UpdateProfilScreen> {
                     text: "Ada kesalahan saat proses data");
               }
               if (_previousEmail.isEmpty) {
-                _previousEmail = snapshot.data!.email!;
+                _previousEmail = snapshot.data!.email;
               }
               return Column(
                 children: [

@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (statusCode != null) {
       // Handle error status code
-      print('Error status code: $statusCode');
+      log('Error status code: $statusCode');
     } else {
       _userProfile.then((value) {
         // Navigasi ke halaman home jika pemanggilan berhasil
@@ -70,7 +70,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   fit: BoxFit.cover,
                 ),
               ),
-              CircularProgressIndicator(color: kPrimaryColor),
+              const CircularProgressIndicator(color: kPrimaryColor),
             ],
           ),
         ),

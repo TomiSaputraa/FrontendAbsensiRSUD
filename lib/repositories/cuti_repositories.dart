@@ -34,7 +34,7 @@ class CutiRepositories {
       if (response.statusCode == 201) {
         print("Cuti berhasil : ${response.data}");
       } else {
-        print("Cuti gagal: ${response}");
+        print("Cuti gagal: $response");
       }
     } on DioException catch (e) {
       if (e.response != null) {

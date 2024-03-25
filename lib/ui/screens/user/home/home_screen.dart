@@ -52,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void getHourAbsensi() async {
-    final absensiModel = await _absensiRepositories!.getLastAbsensi();
+    final absensiModel = await _absensiRepositories.getLastAbsensi();
     setState(() {
       _absensiModel = absensiModel;
     });
@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
     DateTime waktuMasuk = DateTime.parse(_absensiModel!.tanggalAbsensi);
 
     // Mengubah zona waktu dari UTC menjadi UTC+7
-    waktuMasuk = waktuMasuk.add(Duration(hours: 7));
+    waktuMasuk = waktuMasuk.add(const Duration(hours: 7));
 
     // Format tanggal sesuai dengan zona waktu UTC+7
     DateFormat format = DateFormat('dd-MM-yyyy');
